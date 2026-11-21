@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- AMOLED & Dark Mode Logo (Pure Black Background) -->
+  <defs>
+    <linearGradient id="pf-dark-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#6366F1"/>
+    </linearGradient>
+    <linearGradient id="pf-dark-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#22D3EE"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="128" fill="#000000"/>
+  <rect width="504" height="504" x="4" y="4" rx="124" fill="none" stroke="#222222" stroke-width="4"/>
+
+  <!-- Outer Hexagonal Frame -->
+  <path d="M 256 72 L 404 158 L 404 330 L 256 416 L 108 330 L 108 158 Z" 
+        fill="none" 
+        stroke="url(#pf-dark-grad)" 
+        stroke-width="20" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"/>
+
+  <!-- P Loop -->
+  <path d="M 180 180 L 320 180 C 354 180 372 200 372 232 C 372 264 354 284 320 284 L 236 284" 
+        fill="none" 
+        stroke="url(#pf-dark-grad)" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Vertical Stem -->
+  <path d="M 236 150 L 236 360" 
+        fill="none" 
+        stroke="url(#pf-dark-grad)" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+  
+  <!-- F Bar -->
+  <path d="M 236 304 L 308 304" 
+        fill="none" 
+        stroke="url(#pf-dark-cyan)" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+
+  <!-- Spark -->
+  <polygon points="340,344 356,360 340,376 324,360" fill="url(#pf-dark-cyan)"/>
+</svg>

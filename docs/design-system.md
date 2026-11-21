@@ -1,6 +1,6 @@
 # PocketForge AI Design System (`ForgeDesign`)
 
-## 1. Design Philosophy & Goals
+## 1. Design Philosophy & Architectural Principles
 The **ForgeDesign** system is engineered specifically for autonomous AI development on mobile devices. It transforms Mobile Harness from an engineering prototype with a crowded, orange-accented interface into a consumer-grade, distraction-free IDE experience.
 
 ### Core Pillars
@@ -18,6 +18,8 @@ The **ForgeDesign** system is engineered specifically for autonomous AI developm
    - Bottom navigation bars, modal bottom sheets for selections, and essential inputs situated in the thumb comfort zone.
 5. **Adaptive Across Form Factors:**
    - Responsive layouts optimized for standard phones, foldables (unfolded 8:7 ratio), and tablets (split dual-pane editor/chat).
+6. **Zero Emoji in User Interface:**
+   - All visual controls and status markers use the open-source **Phosphor Icons** (MIT) family exclusively. Zero emoji or plain Unicode symbols are used as icons.
 
 ---
 
@@ -49,80 +51,75 @@ The **ForgeDesign** system is engineered specifically for autonomous AI developm
 
 ---
 
-## 3. Typography Scale
-ForgeDesign utilizes **Inter** (or Android system Roboto) for UI prose and **JetBrains Mono** for code, terminal, diffs, and logs.
+## 3. Typography & Multi-Language Support (English + Bengali)
+To ensure pristine legibility across English, technical code, and Bengali, ForgeDesign enforces a multi-font fallback stack:
+- **Latin Prose:** **Inter** (or Android system Roboto)
+- **Bengali Prose:** **Noto Sans Bengali** (open-source by Google)
+- **Code & Monospace:** **JetBrains Mono**
 
-| Scale Token | Font | Size | Weight | Line Height | Usage |
+### Font Fallback Stack
+```css
+/* UI Prose Fallback */
+font-family: "Inter", "Noto Sans Bengali", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+/* Monospace & Terminal Fallback */
+font-family: "JetBrains Mono", Consolas, "Courier New", monospace;
+```
+
+### Typography Scale Table
+
+| Scale Token | Font Stack | Size | Weight | Line Height | Usage |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| `Display` | Inter | 24sp | Bold (700) | 32sp | Hero greetings, welcome screen |
-| `TitleLarge` | Inter | 18sp | SemiBold (600) | 24sp | Screen headers, modal titles |
-| `TitleMedium`| Inter | 16sp | SemiBold (600) | 22sp | Card titles, project names |
-| `BodyLarge` | Inter | 15sp | Regular (400) | 22sp | Chat messages, markdown prose |
-| `BodyMedium` | Inter | 13sp | Regular (400) | 18sp | Subtitles, helper text |
-| `LabelSmall` | Inter | 11sp | Medium (500) | 14sp | Badges, timestamps, tags |
+| `Display` | Inter / Noto Sans Bengali | 24sp | Bold (700) | 32sp | Hero greetings, welcome screen |
+| `TitleLarge` | Inter / Noto Sans Bengali | 18sp | SemiBold (600) | 24sp | Screen headers, modal titles |
+| `TitleMedium`| Inter / Noto Sans Bengali | 16sp | SemiBold (600) | 22sp | Card titles, project names |
+| `BodyLarge` | Inter / Noto Sans Bengali | 15sp | Regular (400) | 22sp | Chat messages, markdown prose |
+| `BodyMedium` | Inter / Noto Sans Bengali | 13sp | Regular (400) | 18sp | Subtitles, helper text |
+| `LabelSmall` | Inter / Noto Sans Bengali | 11sp | Medium (500) | 14sp | Badges, timestamps, tags |
 | `CodeEditor` | JetBrains Mono | 13sp | Regular (400) | 20sp | Code editor text, file viewer |
 | `Terminal` | JetBrains Mono | 12sp | Medium (500) | 16sp | PTY terminal, logs, diffs |
 
 ---
 
-## 4. Spacing, Radii & Elevation Grid
-- **4dp Baseline Grid:** All margins, paddings, and component dimensions are multiples of 4:
-  - `space-xxs`: 4dp
-  - `space-xs`: 8dp
-  - `space-sm`: 12dp
-  - `space-md`: 16dp (standard screen padding)
-  - `space-lg`: 24dp
-  - `space-xl`: 32dp
-- **Corner Radii:**
-  - `radius-sm`: 6dp (chips, badges, code blocks)
-  - `radius-md`: 12dp (buttons, cards, text fields)
-  - `radius-lg`: 18dp (dialogs, bottom sheets)
-  - `radius-full`: 999dp (pills, avatars, status dots)
-- **Elevation / Outlines:**
-  - Subtle 1dp solid borders (`border-subtle`: `#262B35` / `#222222`) preferred over heavy drop-shadows for sharp mobile readability.
+## 4. Brand Logo & Launcher Icon System
+PocketForge AI features a custom geometric monogram combining an outer hexagonal code-bracket frame with an interlocking "P" and "F" anvil motif and an autonomous cyber-cyan spark node.
+
+### Vector Assets Created (`docs/mockups/assets/`)
+1. `logo.svg`: Full-color brand emblem with Electric Indigo and Cyber Cyan gradients.
+2. `logo-dark.svg`: High-contrast version optimized for Obsidian and AMOLED black backgrounds.
+3. `logo-light.svg`: Slate and deep indigo version optimized for Clean Light mode.
+4. `logo-monochrome.svg`: Single-color flat vector mark suitable for status bar notifications.
+5. `adaptive-icon.svg`: Android Adaptive Icon format (108x108 viewport with 72x72 safe circle).
 
 ---
 
-## 5. Core Component Library
-
-### 5.1 Primary & Secondary Buttons
-- **Primary Button:** 52dp height, full-width or pill, `primary` background (`#6366F1`), bold white text, subtle press-scale animation.
-- **Secondary / Ghost Button:** 44dp height, outline border, surface background, subtle ripple.
-
-### 5.2 Chat Bubbles & Reasoning Cards
-- **User Bubble:** Right-aligned, dark indigo tint (`#1E1B4B`), clear padding, rounded with bottom-right notch.
-- **Agent Bubble:** Left-aligned, surface card (`#16191E`), Markdown rendering, syntax-highlighted code blocks with 1-tap "Copy" and "Insert into Editor".
-- **Collapsible Reasoning ("Thinking"):** Cyan border (`#06B6D4`), pulsing dot, collapsed by default into a 1-line chip ("Thinking for 4s..."), expandable to reveal step-by-step agent thoughts.
-
-### 5.3 Tool Approval Cards
-- Dedicated card appearing inline when the agent wants to execute a command or modify files:
-  - Header: Tool name (`execute_command`, `write_file`) + risk level badge.
-  - Body: Command string or expandable unified diff.
-  - Actions: 2 large buttons: **Approve (`#10B981`)** vs **Reject (`#EF4444`)**.
-
-### 5.4 Terminal Key Bar
-- Fixed horizontal scroll bar sitting right above the mobile keyboard:
-  - Sticky modifier keys: `ESC`, `TAB`, `CTRL`, `ALT`.
-  - Directional arrows: `▲`, `▼`, `◀`, `▶`.
-  - Common shortcuts: `~`, `/`, `-`, `|`, `PIPE`, `^C`, `^D`.
-
-### 5.5 Actionable Error Cards
-- Never throw raw stack traces or silent failures to users:
-  - Top icon + clear plain-language title (e.g., *"Cannot connect to Anthropic"*).
-  - One-line explanation (e.g., *"Your API key is missing or invalid"*).
-  - Action button: *"Fix in Settings"* or *"Retry"*.
+## 5. Premium Icon Standard: Phosphor Icons (MIT)
+All interface icons are sourced strictly from the **Phosphor Icons** library.
+- Base touch target: 48dp
+- Icon display size: 24dp (primary controls), 20dp (compact tags/chips)
+- Default style: `regular` (stroke)
+- Active/selected style: `fill`
+- Conversion to Android: Phosphor SVGs are converted to Android `VectorDrawable` XML files located in `app/src/main/res/drawable/` and consumed via standard Jetpack Compose `Icon()` elements.
+- Full catalog documented in `docs/icon-map.md`.
 
 ---
 
-## 6. The 11 Screen Specifications
-1. **Welcome + One-Flow Setup:** Language selector, device architecture check, 1-tap workspace download, API key entry with live test button, battery exemption wizard.
-2. **Home Screen:** Greeting, prominent "Start New Task" button, Quick Actions carousel, running services status widget, recent projects list.
-3. **Chat / Agent Screen:** Interactive conversation, collapsible tool reasoning, active tool chips, input bar with attachment button, voice/image integration.
-4. **Project Screen:** Tabs for Chat, Files, Live Preview, and Terminal (Pro mode).
-5. **Files & Editor:** File hierarchy tree with icons, multi-file tabs, breadcrumbs, search, syntax highlighting, line numbers.
-6. **Live Preview:** Built-in web browser viewing local server (e.g., `localhost:3000`), URL bar, reload, console logs drawer.
-7. **Interactive Terminal:** True PTY Linux session, custom monospace font, ANSI color support, thumb-friendly sticky key bar.
-8. **Android Build Dashboard:** Target project, one-click "Build APK", stage timeline (Clean -> AAPT2 -> D8/R8 -> Sign), readable error breakdown, direct APK installer.
-9. **Settings Screen:** Grouped categories (AI Providers, Agents, Appearance, Languages, Backup, Subsystem).
-10. **Developer & Credits Screen:** Developer card for **Nayem Hossain** with biography and links, legal attribution to Mobile Harness (MIT), PRoot, talloc, libandroid-shmem, and bundled licenses viewer.
-11. **Background & Battery Help Screen:** Automatic OEM detection (Samsung OneUI, Xiaomi MIUI/HyperOS, etc.) with step-by-step visual toggle guides to disable battery killing.
+## 6. Proposed New Features (Post-Parity Roadmap)
+
+| Feature | Description | Difficulty | Priority | On-Device Feasibility & Limitations |
+| :--- | :--- | :--- | :--- | :--- |
+| **Command Palette & Global Search** | Quick modal (Ctrl+K / Cmd+K or tap search bar) to jump across files, chats, settings, and commands. | **Medium** | **High** | Fully feasible on-device using in-memory file index and Kotlin coroutines. |
+| **Project Templates Picker** | Starter wizards for Static Web, Vite/React, Node API, Python, Flask, and Android Compose. | **Easy** | **High** | Fully feasible; reuses existing `AndroidProjectTemplateGenerator` and offline zip templates. |
+| **Git Management Panel** | Visual panel showing git status, diff viewer, commit form, branch switcher, and push/pull. | **Medium** | **High** | Fully feasible; uses standard `git` CLI installed in Ubuntu subsystem. |
+| **Prompt Library & Rules Editor** | Saved prompt snippets and a dedicated editor for project-specific agent instruction files (`CLAUDE.md`, rules). | **Easy** | **Medium** | Fully feasible; stored in local SQLite / DataStore and project root. |
+| **Agent Switcher & Token/Cost Tracker** | Switch agent per conversation thread; track token consumption and estimated API costs per provider. | **Medium** | **High** | Fully feasible; streams token usage from agent deltas and computes cost locally. |
+| **Voice Input for Prompts** | Voice dictation button in chat input bar powered by Android's built-in `SpeechRecognizer` API. | **Easy** | **Medium** | Fully feasible; uses native offline/online Android speech recognition engine. |
+| **Background Tasks Center** | Dedicated drawer showing all running agents, web dev servers, and Gradle builds with pause/kill actions. | **Medium** | **High** | Fully feasible; queries `RuntimeExecutionService` task registry. |
+| **Port Manager & 1-Tap Preview** | Scans and lists all active TCP listening ports in PRoot (`netstat -tuln`) with 1-tap "Open in WebView". | **Easy** | **High** | Fully feasible; reuses `LocalNetwork.scanActivePorts()`. |
+| **Project ZIP Import/Export** | Export entire project folder to a compressed `.zip` file; import external zip into workspace. | **Easy** | **High** | Fully feasible; uses standard `java.util.zip` and Android Storage Access Framework (SAF). |
+| **Biometric Key Vault Lock** | Hardware biometric prompt (Fingerprint / Face Unlock via `BiometricPrompt`) to view/edit Keystore API keys. | **Medium** | **High** | Fully feasible; standard Android `BiometricManager` API. |
+| **MCP Servers Manager** | UI to inspect and configure Model Context Protocol (MCP) servers for agents that support MCP. | **Hard** | **Medium** | *UNVERIFIED per agent:* Claude Code and Claude Desktop support MCP natively via JSON config (`~/.claude/config.json`), while DeepSeek Harness requires verification. Can be tested by spawning a sample local MCP stdio server in PRoot. |
+| **Hardware Keyboard & Tablet Two-Pane** | Physical keyboard shortcuts (Ctrl+S save, Ctrl+P search, Ctrl+` terminal) and adaptive side-by-side tablet layout. | **Medium** | **High** | Fully feasible; Jetpack Compose `BoxWithConstraints` and `onKeyEvent`. |
+| **Appearance & Haptics Settings** | Accent color customization (Indigo, Cyan, Emerald, Rose), font size scaling, haptic feedback toggle, reduced motion. | **Easy** | **Medium** | Fully feasible; Compose theme tokens and `Vibrator` service. |
+| **App Shortcuts & Quick Settings Tile** | Android Home-screen app shortcut and System Quick Settings pull-down tile to launch "New Chat" instantly. | **Easy** | **Medium** | Fully feasible; standard Android `TileService` and dynamic `ShortcutManager`. |
+| **Crash & Diagnostic Report Export** | 1-tap export of sanitized system diagnostics (CPU, RAM, OS, logcat, no API keys) for bug reports. | **Easy** | **Medium** | Fully feasible; packages sanitized logs into a shareable text file. |

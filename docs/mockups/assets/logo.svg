@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="pf-grad-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="50%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#4F46E5"/>
+    </linearGradient>
+    <linearGradient id="pf-grad-cyan" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06B6D4"/>
+      <stop offset="100%" stop-color="#38BDF8"/>
+    </linearGradient>
+    <linearGradient id="pf-bg-dark" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E232B"/>
+      <stop offset="100%" stop-color="#0D0F12"/>
+    </linearGradient>
+    <filter id="pf-glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="12" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background rounded squircle -->
+  <rect width="512" height="512" rx="128" fill="url(#pf-bg-dark)"/>
+  <rect width="504" height="504" x="4" y="4" rx="124" fill="none" stroke="#262B35" stroke-width="4"/>
+
+  <!-- Geometric PocketForge Emblem -->
+  <!-- Outer Hexagonal Frame / Code Brackets -->
+  <path d="M 256 72 L 404 158 L 404 330 L 256 416 L 108 330 L 108 158 Z" 
+        fill="none" 
+        stroke="url(#pf-grad-primary)" 
+        stroke-width="20" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"/>
+
+  <!-- Inner Interlocking Anvil & Terminal Spark (P + F Motif) -->
+  <!-- Upper "P" Bar -->
+  <path d="M 180 180 L 320 180 C 354 180 372 200 372 232 C 372 264 354 284 320 284 L 236 284" 
+        fill="none" 
+        stroke="url(#pf-grad-primary)" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <!-- Central Stem & Lower "F" Crossbar -->
+  <path d="M 236 150 L 236 360" 
+        fill="none" 
+        stroke="url(#pf-grad-primary)" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+  
+  <path d="M 236 304 L 308 304" 
+        fill="none" 
+        stroke="url(#pf-grad-cyan)" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+
+  <!-- Core Autonomous Spark Node (Cyan Diamond Accent) -->
+  <polygon points="340,344 356,360 340,376 324,360" fill="url(#pf-grad-cyan)" filter="url(#pf-glow)"/>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <!-- Pure Monochrome Vector Mark (Ideal for notification icons and status bars) -->
+  <path d="M 256 72 L 404 158 L 404 330 L 256 416 L 108 330 L 108 158 Z" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="20" 
+        stroke-linejoin="round" 
+        stroke-linecap="round"/>
+
+  <path d="M 180 180 L 320 180 C 354 180 372 200 372 232 C 372 264 354 284 320 284 L 236 284" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="24" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+
+  <path d="M 236 150 L 236 360" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+  
+  <path d="M 236 304 L 308 304" 
+        fill="none" 
+        stroke="currentColor" 
+        stroke-width="24" 
+        stroke-linecap="round"/>
+
+  <polygon points="340,344 356,360 340,376 324,360" fill="currentColor"/>
+</svg>
