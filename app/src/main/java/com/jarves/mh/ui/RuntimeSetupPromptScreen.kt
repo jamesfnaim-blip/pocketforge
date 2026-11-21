@@ -483,10 +483,10 @@ internal fun RuntimeSetupPromptScreen(
     }
 }
 
-private const val CORE_RUNTIME_DOWNLOAD_MB = 69
-private const val CLAUDE_RUNTIME_DOWNLOAD_MB = 72
-private const val DSH_RUNTIME_DOWNLOAD_MB = 27
-private const val AGY_RUNTIME_DOWNLOAD_MB = 40
-private const val PYTHON_RUNTIME_DOWNLOAD_MB = 55
-private const val ANDROID_RUNTIME_DOWNLOAD_MB = 570
+internal const val CORE_RUNTIME_DOWNLOAD_MB = 69
+internal const val CLAUDE_RUNTIME_DOWNLOAD_MB = 72
+internal const val DSH_RUNTIME_DOWNLOAD_MB = 27
+internal const val AGY_RUNTIME_DOWNLOAD_MB = 40
+internal const val PYTHON_RUNTIME_DOWNLOAD_MB = 55
+internal const val ANDROID_RUNTIME_DOWNLOAD_MB = 570
 

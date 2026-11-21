@@ -73,6 +73,7 @@ import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@Composable
 internal fun LiveClaudeProcess(
     processItems: List<ActivityItem>,
     isRunning: Boolean,

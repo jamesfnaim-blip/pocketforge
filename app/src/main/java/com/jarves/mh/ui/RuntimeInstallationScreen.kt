@@ -72,6 +72,7 @@ import java.util.Date
 import java.util.Locale
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import androidx.compose.ui.platform.LocalView
 
 @Composable
 internal fun localizeRuntimeMessage(message: String): String {
