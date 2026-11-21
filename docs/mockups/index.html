@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PocketForge AI — Mobile Screen Mockups</title>
+  <style>
+    :root {
+      /* Obsidian Dark default */
+      --bg-page: #080A0E;
+      --phone-border: #262B35;
+      --app-bg: #0D0F12;
+      --app-surface: #16191E;
+      --app-surface-elevated: #1E232B;
+      --app-border: #262B35;
+      --app-text: #F1F5F9;
+      --app-text-sec: #94A3B8;
+      --app-text-muted: #64748B;
+      --primary: #6366F1;
+      --primary-hover: #4F46E5;
+      --accent: #06B6D4;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --error: #EF4444;
+      --terminal-bg: #07080A;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --font-mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+    }
+
+    /* AMOLED Theme */
+    body.theme-amoled {
+      --app-bg: #000000;
+      --app-surface: #0A0A0A;
+      --app-surface-elevated: #141414;
+      --app-border: #222222;
+      --app-text: #FFFFFF;
+      --app-text-sec: #A1A1AA;
+      --app-text-muted: #71717A;
+    }
+
+    /* Clean Light Theme */
+    body.theme-light {
+      --bg-page: #E2E8F0;
+      --phone-border: #CBD5E1;
+      --app-bg: #F8F9FA;
+      --app-surface: #FFFFFF;
+      --app-surface-elevated: #FFFFFF;
+      --app-border: #E2E8F0;
+      --app-text: #0F172A;
+      --app-text-sec: #475569;
+      --app-text-muted: #94A3B8;
+      --terminal-bg: #1E293B;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-page);
+      color: #F8FAFC;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+      transition: background-color 0.3s;
+    }
+
+    /* Top Control Bar */
+    .controls-panel {
+      width: 100%;
+      max-width: 960px;
+      background: #16191E;
+      border: 1px solid #262B35;
+      border-radius: 16px;
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-title span {
+      color: var(--primary);
+    }
+    .badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: rgba(99, 102, 241, 0.2);
+      color: #818CF8;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(99, 102, 241, 0.4);
+    }
+    .control-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .select-dropdown, .btn-toggle {
+      background: #1E232B;
+      color: #F1F5F9;
+      border: 1px solid #333A48;
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .select-dropdown:hover, .btn-toggle:hover {
+      border-color: var(--primary);
+    }
+    .btn-toggle.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    /* Phone Shell */
+    .phone-container {
+      position: relative;
+      width: 380px;
+      height: 780px;
+      background: var(--app-bg);
+      border: 4px solid var(--phone-border);
+      border-radius: 46px;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      color: var(--app-text);
+      transition: all 0.3s ease;
+    }
+
+    /* Status Bar */
+    .phone-status-bar {
+      height: 38px;
+      padding: 8px 24px 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--app-text);
+      user-select: none;
+      z-index: 10;
+    }
+    .camera-cutout {
+      width: 80px;
+      height: 18px;
+      background: black;
+      border-radius: 12px;
+      position: absolute;
+      top: 8px;
+      left: calc(50% - 40px);
+    }
+
+    /* Screen Viewport */
+    .screen-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 18px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .screen-content.active {
+      display: flex;
+    }
+
+    /* Bottom Navigation Bar */
+    .phone-nav-bar {
+      height: 64px;
+      background: var(--app-surface);
+      border-top: 1px solid var(--app-border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: 8px;
+      z-index: 10;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--app-text-muted);
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 12px;
+      transition: all 0.2s;
+    }
+    .nav-item.active {
+      color: var(--primary);
+    }
+    .nav-icon {
+      font-size: 18px;
+    }
+
+    /* Common Components */
+    .card {
+      background: var(--app-surface);
+      border: 1px solid var(--app-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: var(--app-surface-elevated);
+      color: var(--app-text);
+      border: 1px solid var(--app-border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .title-large {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .text-muted {
+      color: var(--app-text-sec);
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    /* Screen Specific Styles */
+    /* 1. Setup Screen */
+    .step-pill {
+      font-size: 11px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818CF8;
+      padding: 4px 10px;
+      border-radius: 999px;
+      width: fit-content;
+      font-weight: 600;
+    }
+    .check-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      background: var(--app-surface-elevated);
+      font-size: 13px;
+    }
+    .check-list-item .check-icon {
+      color: var(--success);
+      font-weight: 800;
+    }
+
+    /* 2. Chat Screen */
+    .chat-bubble-agent {
+      background: var(--app-surface);
+      border: 1px solid var(--app-border);
+      padding: 12px 14px;
+      border-radius: 16px 16px 16px 4px;
+      font-size: 13.5px;
+      line-height: 1.5;
+      max-width: 90%;
+    }
+    .chat-bubble-user {
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      padding: 10px 14px;
+      border-radius: 16px 16px 4px 16px;
+      font-size: 13.5px;
+      line-height: 1.4;
+      align-self: flex-end;
+      max-width: 85%;
+    }
+    .reasoning-chip {
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      color: var(--accent);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .approval-card {
+      background: #14171C;
+      border: 1px solid #F59E0B;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .code-preview {
+      background: var(--terminal-bg);
+      padding: 8px 10px;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #A5F3FC;
+      overflow-x: auto;
+    }
+    .chat-input-bar {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      background: var(--app-surface);
+      border: 1px solid var(--app-border);
+      border-radius: 24px;
+      padding: 6px 14px;
+    }
+    .chat-input-bar input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--app-text);
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* 3. Terminal Screen */
+    .terminal-container {
+      flex: 1;
+      background: var(--terminal-bg);
+      border: 1px solid var(--app-border);
+      border-radius: 12px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      color: #38BDF8;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow-y: auto;
+    }
+    .term-key-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 6px 0;
+    }
+    .term-key {
+      background: var(--app-surface-elevated);
+      border: 1px solid var(--app-border);
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-size: 11px;
+      font-family: var(--font-mono);
+      color: var(--app-text);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .term-key.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* 4. Editor Screen */
+    .editor-line-numbers {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--app-text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding-right: 8px;
+      border-right: 1px solid var(--app-border);
+      user-select: none;
+    }
+
+    /* 5. Developer & Credits Screen */
+    .profile-card {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 20px;
+    }
+    .avatar-circle {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6366F1, #06B6D4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 8px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Controls Panel for PC Viewers -->
+  <div class="controls-panel">
+    <div class="brand-title">
+      ⚡ PocketForge <span>AI</span>
+      <span class="badge">ForgeDesign v1.0</span>
+    </div>
+
+    <div class="control-group">
+      <label style="font-size: 12px; color: #94A3B8;">Preview Screen:</label>
+      <select id="screenSelect" class="select-dropdown" onchange="switchScreen(this.value)">
+        <option value="welcome">1. Welcome & Guided Setup</option>
+        <option value="home" selected>2. Home Dashboard</option>
+        <option value="chat">3. Chat / Autonomous Agent</option>
+        <option value="project">4. Project Workspace Tabs</option>
+        <option value="editor">5. Files & Code Editor</option>
+        <option value="preview">6. Live Web Preview</option>
+        <option value="terminal">7. Linux PTY Terminal</option>
+        <option value="builder">8. Android Build Dashboard</option>
+        <option value="settings">9. Settings & Key Vault</option>
+        <option value="developer">10. Developer & Open-Source Credits</option>
+        <option value="battery">11. Background & Battery Setup</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <label style="font-size: 12px; color: #94A3B8;">Theme:</label>
+      <button class="btn-toggle active" id="btnDark" onclick="setTheme('dark')">Obsidian</button>
+      <button class="btn-toggle" id="btnAmoled" onclick="setTheme('amoled')">AMOLED</button>
+      <button class="btn-toggle" id="btnLight" onclick="setTheme('light')">Light</button>
+    </div>
+
+    <div class="control-group">
+      <label style="font-size: 12px; color: #94A3B8;">Mode:</label>
+      <button class="btn-toggle active" id="btnSimple" onclick="toggleMode('simple')">Simple</button>
+      <button class="btn-toggle" id="btnPro" onclick="toggleMode('pro')">Pro</button>
+    </div>
+  </div>
+
+  <!-- Mobile Phone Frame -->
+  <div class="phone-container">
+    <div class="phone-status-bar">
+      <span>12:45</span>
+      <div class="camera-cutout"></div>
+      <span>📶 5G 🔋 98%</span>
+    </div>
+
+    <!-- 1. WELCOME & SETUP SCREEN -->
+    <div id="screen-welcome" class="screen-content">
+      <div style="text-align: center; margin-top: 10px;">
+        <div style="font-size: 38px;">⚡</div>
+        <div class="title-large" style="margin-top: 8px;">Welcome to PocketForge</div>
+        <div class="text-muted" style="margin-top: 4px;">Run full AI coding agents directly on your phone.</div>
+      </div>
+
+      <div class="card" style="margin-top: 10px;">
+        <div class="step-pill">1-Tap Guided Setup</div>
+        <div style="font-size: 14px; font-weight: 600; margin-top: 4px;">Hardware & System Check</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+          <div class="check-list-item">
+            <span class="check-icon">✓</span>
+            <div>ARM64 Architecture <span style="color: var(--app-text-muted); font-size: 11px;">(aarch64 detected)</span></div>
+          </div>
+          <div class="check-list-item">
+            <span class="check-icon">✓</span>
+            <div>Storage Space <span style="color: var(--app-text-muted); font-size: 11px;">(42.5 GB free)</span></div>
+          </div>
+          <div class="check-list-item">
+            <span class="check-icon">✓</span>
+            <div>16 KiB Memory Segments <span style="color: var(--app-text-muted); font-size: 11px;">(Compatible)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 14px; font-weight: 600;">AI Provider Key</div>
+        <div class="text-muted">Enter Anthropic, OpenAI, or DeepSeek API key:</div>
+        <input type="password" value="sk-ant-api03-samplekey" style="background: var(--app-surface-elevated); border: 1px solid var(--app-border); border-radius: 8px; padding: 10px; color: var(--app-text); font-family: var(--font-mono); font-size: 12px;">
+        <button class="btn-secondary" style="color: var(--success); border-color: rgba(16, 185, 129, 0.4);">
+          ✓ Verified (Claude 3.7 Sonnet Active)
+        </button>
+      </div>
+
+      <button class="btn-primary" style="margin-top: auto;" onclick="switchScreen('home')">
+        Start Building Now →
+      </button>
+    </div>
+
+    <!-- 2. HOME DASHBOARD -->
+    <div id="screen-home" class="screen-content active">
+      <div class="header-row">
+        <div>
+          <div style="font-size: 12px; color: var(--app-text-muted);">Good afternoon,</div>
+          <div class="title-large">Nayem Hossain</div>
+        </div>
+        <div style="font-size: 20px; cursor: pointer;" onclick="switchScreen('settings')">⚙️</div>
+      </div>
+
+      <!-- Quick Action CTA -->
+      <button class="btn-primary" onclick="switchScreen('chat')">
+        <span>✨</span> Start New Autonomous Task
+      </button>
+
+      <!-- System Health Chip -->
+      <div class="card" style="background: rgba(99, 102, 241, 0.08); border-color: rgba(99, 102, 241, 0.3);">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--success);"></span>
+            <span style="font-size: 13px; font-weight: 600;">Linux Subsystem Active</span>
+          </div>
+          <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: none;">Ubuntu 20.04</span>
+        </div>
+        <div class="text-muted" style="font-size: 12px;">Next.js Dev Server running on <b>localhost:3000</b></div>
+      </div>
+
+      <!-- Recent Projects -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+        <span style="font-size: 14px; font-weight: 600;">Recent Projects</span>
+        <span style="font-size: 12px; color: var(--primary); cursor: pointer;" onclick="switchScreen('project')">View all</span>
+      </div>
+
+      <div class="card" onclick="switchScreen('project')" style="cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-weight: 600; font-size: 14px;">🛍️ ecommerce-mobile-web</div>
+          <span style="font-size: 11px; color: var(--accent);">Active 2m ago</span>
+        </div>
+        <div class="text-muted" style="font-size: 12px;">TypeScript, Tailwind CSS, Next.js 14</div>
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
+          <button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="event.stopPropagation(); switchScreen('chat')">Open Chat</button>
+          <button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="event.stopPropagation(); switchScreen('preview')">Live Preview</button>
+        </div>
+      </div>
+
+      <div class="card" onclick="switchScreen('project')" style="cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-weight: 600; font-size: 14px;">📱 habit-tracker-android</div>
+          <span style="font-size: 11px; color: var(--app-text-muted);">Yesterday</span>
+        </div>
+        <div class="text-muted" style="font-size: 12px;">Kotlin, Jetpack Compose, Material 3</div>
+      </div>
+    </div>
+
+    <!-- 3. CHAT / AGENT SCREEN -->
+    <div id="screen-chat" class="screen-content">
+      <div class="header-row" style="border-bottom: 1px solid var(--app-border); padding-bottom: 8px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="cursor: pointer;" onclick="switchScreen('home')">←</span>
+          <div>
+            <div style="font-size: 14px; font-weight: 700;">Claude Code 2.1</div>
+            <div style="font-size: 11px; color: var(--success);">● Active in ecommerce-mobile-web</div>
+          </div>
+        </div>
+        <span class="badge">Simple</span>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="chat-bubble-user">
+        Create an animated checkout drawer component with Tailwind CSS and Framer Motion.
+      </div>
+
+      <div class="reasoning-chip">
+        <span>⚡</span> Thinking: Analyzing component structure (4s)
+      </div>
+
+      <div class="chat-bubble-agent">
+        I have scaffolded the <code>CheckoutDrawer.tsx</code> component. Before writing it to disk, please approve the file modification:
+      </div>
+
+      <!-- Tool Approval Card -->
+      <div class="approval-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 12px; font-weight: 700; color: #F59E0B;">⚠️ APPROVAL REQUIRED</span>
+          <span style="font-size: 11px; color: var(--app-text-muted);">write_file</span>
+        </div>
+        <div class="code-preview">
+          + components/CheckoutDrawer.tsx<br>
+          + 84 lines added
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-primary" style="flex: 1; padding: 8px; font-size: 12px; background: var(--success);">✓ Approve</button>
+          <button class="btn-secondary" style="flex: 1; padding: 8px; font-size: 12px; color: var(--error);">✕ Reject</button>
+        </div>
+      </div>
+
+      <!-- Chat Input Bar -->
+      <div class="chat-input-bar">
+        <span>📎</span>
+        <input type="text" placeholder="Type a message or instruction...">
+        <span style="color: var(--primary); font-weight: 700; cursor: pointer;">➤</span>
+      </div>
+    </div>
+
+    <!-- 4. PROJECT WORKSPACE TABS -->
+    <div id="screen-project" class="screen-content">
+      <div class="header-row">
+        <div style="font-size: 15px; font-weight: 700;">ecommerce-mobile-web</div>
+        <button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;">Git (main)</button>
+      </div>
+
+      <div style="display: flex; gap: 8px; border-bottom: 1px solid var(--app-border); padding-bottom: 6px;">
+        <span style="font-size: 13px; font-weight: 600; color: var(--primary); border-bottom: 2px solid var(--primary); padding-bottom: 4px;">Chat</span>
+        <span style="font-size: 13px; color: var(--app-text-sec); cursor: pointer;" onclick="switchScreen('editor')">Files</span>
+        <span style="font-size: 13px; color: var(--app-text-sec); cursor: pointer;" onclick="switchScreen('preview')">Preview</span>
+        <span style="font-size: 13px; color: var(--app-text-sec); cursor: pointer;" onclick="switchScreen('terminal')">Terminal</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">Workspace Overview</div>
+        <div class="text-muted" style="font-size: 12px;">Directory: <code>/home/pocketdev/projects/ecommerce-web</code></div>
+        <div style="display: flex; gap: 8px; margin-top: 6px;">
+          <div class="badge" style="background: rgba(16, 185, 129, 0.1); color: #34D399;">Git clean</div>
+          <div class="badge">124 files</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">Active Dev Server</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="text-muted" style="font-size: 12px;">http://localhost:3000</span>
+          <button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="switchScreen('preview')">Open ↗</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. CODE EDITOR SCREEN -->
+    <div id="screen-editor" class="screen-content">
+      <div class="header-row">
+        <span style="font-size: 13px; font-family: var(--font-mono); font-weight: 600;">CheckoutDrawer.tsx</span>
+        <button class="btn-primary" style="padding: 6px 10px; font-size: 11px;">Save</button>
+      </div>
+
+      <div style="display: flex; background: var(--terminal-bg); border: 1px solid var(--app-border); border-radius: 10px; padding: 10px; flex: 1; font-family: var(--font-mono); font-size: 12px;">
+        <div class="editor-line-numbers">
+          <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span>
+        </div>
+        <div style="padding-left: 10px; color: #E2E8F0; overflow-x: auto; line-height: 20px;">
+          <span style="color: #F472B6;">import</span> React <span style="color: #F472B6;">from</span> <span style="color: #34D399;">'react'</span>;<br>
+          <span style="color: #F472B6;">import</span> { motion } <span style="color: #F472B6;">from</span> <span style="color: #34D399;">'framer-motion'</span>;<br><br>
+          <span style="color: #60A5FA;">export const</span> <span style="color: #FBBF24;">CheckoutDrawer</span> = () =&gt; {<br>
+          &nbsp;&nbsp;<span style="color: #F472B6;">return</span> (<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color: #60A5FA;">motion.div</span> <span style="color: #38BDF8;">className</span>=<span style="color: #34D399;">"drawer"</span>&gt;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span style="color: #60A5FA;">h2</span>&gt;Cart Checkout&lt;/<span style="color: #60A5FA;">h2</span>&gt;<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span style="color: #60A5FA;">motion.div</span>&gt;<br>
+          &nbsp;&nbsp;);<br>
+          };
+        </div>
+      </div>
+    </div>
+
+    <!-- 6. LIVE WEB PREVIEW -->
+    <div id="screen-preview" class="screen-content">
+      <div class="header-row" style="background: var(--app-surface); padding: 8px; border-radius: 10px; border: 1px solid var(--app-border);">
+        <span style="font-size: 12px; font-family: var(--font-mono); color: var(--app-text-sec);">http://localhost:3000</span>
+        <div style="display: flex; gap: 8px;">
+          <span style="cursor: pointer;">🔄</span>
+          <span style="cursor: pointer;">↗</span>
+        </div>
+      </div>
+
+      <div style="background: white; color: black; border-radius: 12px; flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+        <div style="font-size: 32px;">🛒</div>
+        <div style="font-size: 18px; font-weight: 700; margin-top: 10px;">Mobile Storefront</div>
+        <div style="color: #64748B; font-size: 13px; margin-top: 6px;">Live rendering inside local Ubuntu subsystem!</div>
+        <button style="margin-top: 16px; background: #6366F1; color: white; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 600;">Checkout ($49.00)</button>
+      </div>
+    </div>
+
+    <!-- 7. INTERACTIVE TERMINAL SCREEN -->
+    <div id="screen-terminal" class="screen-content">
+      <div class="header-row">
+        <span style="font-size: 13px; font-weight: 700;">Bash Subsystem (PRoot)</span>
+        <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: #34D399;">PTY Online</span>
+      </div>
+
+      <div class="terminal-container">
+        <span style="color: #A3E635;">pocketdev@android:~$</span> uname -a<br>
+        Linux pocketdev 5.10.168-android #1 SMP PREEMPT aarch64 GNU/Linux<br><br>
+        <span style="color: #A3E635;">pocketdev@android:~$</span> node -v<br>
+        v24.19.0<br><br>
+        <span style="color: #A3E635;">pocketdev@android:~$</span> git --version<br>
+        git version 2.25.1<br><br>
+        <span style="color: #A3E635;">pocketdev@android:~$</span> <span style="animation: blink 1s infinite;">█</span>
+      </div>
+
+      <!-- Sticky Terminal Keys Row -->
+      <div class="term-key-bar">
+        <button class="term-key">ESC</button>
+        <button class="term-key">TAB</button>
+        <button class="term-key active">CTRL</button>
+        <button class="term-key">ALT</button>
+        <button class="term-key">^C</button>
+        <button class="term-key">|</button>
+        <button class="term-key">/</button>
+        <button class="term-key">~</button>
+        <button class="term-key">▲</button>
+        <button class="term-key">▼</button>
+      </div>
+    </div>
+
+    <!-- 8. ANDROID BUILD DASHBOARD -->
+    <div id="screen-builder" class="screen-content">
+      <div class="header-row">
+        <span class="title-large">Android Builder</span>
+        <span class="badge">SDK 36 / AAPT2</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">Build Target: habit-tracker-android</div>
+        <div class="text-muted" style="font-size: 12px;">Flavor: <code>arm64Release</code> (V1+V2 signed)</div>
+        <button class="btn-primary" style="margin-top: 6px;">🔨 Compile APK on Device</button>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">Build Progress Pipeline</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px; font-size: 12px;">
+          <div style="color: var(--success);">✓ 1. AAPT2 Resource Compilation (0.8s)</div>
+          <div style="color: var(--success);">✓ 2. Kotlin / Java Compilation (2.1s)</div>
+          <div style="color: var(--success);">✓ 3. D8 Dexing & Optimization (1.4s)</div>
+          <div style="color: var(--accent);">⟳ 4. APK Signing & Alignment...</div>
+        </div>
+      </div>
+
+      <button class="btn-secondary" style="color: var(--success); border-color: rgba(16, 185, 129, 0.4);">
+        📲 Install Built APK on Phone
+      </button>
+    </div>
+
+    <!-- 9. SETTINGS SCREEN -->
+    <div id="screen-settings" class="screen-content">
+      <div class="title-large">Settings</div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">AI Providers & Key Vault</div>
+        <div class="text-muted" style="font-size: 12px;">Stored securely in Android Hardware Keystore (AES-256).</div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+          <span style="font-size: 13px;">Anthropic (Claude)</span>
+          <span style="color: var(--success); font-size: 12px;">Connected ✓</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+          <span style="font-size: 13px;">DeepSeek</span>
+          <span style="color: var(--app-text-muted); font-size: 12px;">Not configured</span>
+        </div>
+      </div>
+
+      <div class="card" onclick="switchScreen('battery')" style="cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 13px; font-weight: 600;">🔋 Background Execution Setup</div>
+          <span>→</span>
+        </div>
+        <div class="text-muted" style="font-size: 12px;">Prevent OEM battery killers from terminating agents.</div>
+      </div>
+
+      <div class="card" onclick="switchScreen('developer')" style="cursor: pointer;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div style="font-size: 13px; font-weight: 600;">👤 Developer & Open-Source Credits</div>
+          <span>→</span>
+        </div>
+        <div class="text-muted" style="font-size: 12px;">Nayem Hossain profile, licenses, and changelog.</div>
+      </div>
+    </div>
+
+    <!-- 10. DEVELOPER & CREDITS SCREEN -->
+    <div id="screen-developer" class="screen-content">
+      <div class="card profile-card">
+        <div class="avatar-circle">NH</div>
+        <div style="font-size: 18px; font-weight: 700;">Nayem Hossain</div>
+        <div style="font-size: 12px; color: var(--accent); font-weight: 600;">Founder & Lead Architect, PocketForge AI</div>
+        <div class="text-muted" style="font-size: 12px; margin-top: 4px;">
+          "Empowering developers and creators to build real software anywhere, directly from their phone."
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-top: 10px;">
+          <a href="https://nayemhsn.com" target="_blank" style="text-decoration: none;">
+            <button class="btn-secondary" style="font-size: 11px;">🌐 nayemhsn.com</button>
+          </a>
+          <a href="https://linkedin.com/in/nayemdevbd" target="_blank" style="text-decoration: none;">
+            <button class="btn-secondary" style="font-size: 11px;">💼 LinkedIn</button>
+          </a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 700;">Open-Source Acknowledgments</div>
+        <div class="text-muted" style="font-size: 11.5px; line-height: 1.4;">
+          PocketForge AI is built upon the open-source innovations of:
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; margin-top: 6px; font-size: 12px;">
+          <div>• <b>Mobile Harness:</b> MIT License (TechJarves)</div>
+          <div>• <b>PRoot Subsystem:</b> GPL-2.0 License (Termux)</div>
+          <div>• <b>talloc Memory Allocator:</b> LGPL-3.0 License</div>
+          <div>• <b>libandroid-shmem:</b> BSD-3-Clause License</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11. BATTERY & BACKGROUND SETUP SCREEN -->
+    <div id="screen-battery" class="screen-content">
+      <div class="header-row">
+        <span class="title-large">Background Setup</span>
+        <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #FBBF24;">Important</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size: 13px; font-weight: 600;">Keep Agents Running In Background</div>
+        <div class="text-muted" style="font-size: 12px;">
+          Android will automatically kill long-running builds and agents when your screen turns off unless battery optimizations are disabled.
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="font-weight: 600; font-size: 13px;">Detected Phone Brand: Samsung (OneUI)</div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px; font-size: 12px;">
+          <div class="check-list-item">
+            <span>1.</span>
+            <div>Settings → Apps → PocketForge → <b>Battery: Unrestricted</b></div>
+          </div>
+          <div class="check-list-item">
+            <span>2.</span>
+            <div>Device Care → Background usage limits → <b>Never sleeping apps</b></div>
+          </div>
+        </div>
+        <button class="btn-primary" style="margin-top: 10px; font-size: 12px;">
+          Open Phone Battery Settings ↗
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="phone-nav-bar">
+      <div class="nav-item active" id="nav-home" onclick="switchScreen('home')">
+        <span class="nav-icon">⚡</span>
+        <span>Home</span>
+      </div>
+      <div class="nav-item" id="nav-chat" onclick="switchScreen('chat')">
+        <span class="nav-icon">💬</span>
+        <span>Agent</span>
+      </div>
+      <div class="nav-item" id="nav-project" onclick="switchScreen('project')">
+        <span class="nav-icon">📁</span>
+        <span>Projects</span>
+      </div>
+      <div class="nav-item" id="nav-terminal" onclick="switchScreen('terminal')">
+        <span class="nav-icon">⌨️</span>
+        <span>Terminal</span>
+      </div>
+      <div class="nav-item" id="nav-settings" onclick="switchScreen('settings')">
+        <span class="nav-icon">⚙️</span>
+        <span>Settings</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function switchScreen(screenId) {
+      document.querySelectorAll('.screen-content').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('screen-' + screenId);
+      if (target) target.classList.add('active');
+
+      document.getElementById('screenSelect').value = screenId;
+
+      // Update bottom nav highlighting
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      if (screenId === 'home') document.getElementById('nav-home')?.classList.add('active');
+      if (screenId === 'chat') document.getElementById('nav-chat')?.classList.add('active');
+      if (screenId === 'project' || screenId === 'editor' || screenId === 'preview') document.getElementById('nav-project')?.classList.add('active');
+      if (screenId === 'terminal') document.getElementById('nav-terminal')?.classList.add('active');
+      if (screenId === 'settings' || screenId === 'developer' || screenId === 'battery') document.getElementById('nav-settings')?.classList.add('active');
+    }
+
+    function setTheme(theme) {
+      document.body.classList.remove('theme-amoled', 'theme-light');
+      document.querySelectorAll('.btn-toggle').forEach(b => {
+        if (b.id.startsWith('btnDark') || b.id.startsWith('btnAmoled') || b.id.startsWith('btnLight')) {
+          b.classList.remove('active');
+        }
+      });
+
+      if (theme === 'amoled') {
+        document.body.classList.add('theme-amoled');
+        document.getElementById('btnAmoled').classList.add('active');
+      } else if (theme === 'light') {
+        document.body.classList.add('theme-light');
+        document.getElementById('btnLight').classList.add('active');
+      } else {
+        document.getElementById('btnDark').classList.add('active');
+      }
+    }
+
+    function toggleMode(mode) {
+      document.getElementById('btnSimple').classList.toggle('active', mode === 'simple');
+      document.getElementById('btnPro').classList.toggle('active', mode === 'pro');
+      const terminalNav = document.getElementById('nav-terminal');
+      if (terminalNav) {
+        terminalNav.style.display = mode === 'simple' ? 'none' : 'flex';
+      }
+    }
+  </script>
+</body>
+</html>
