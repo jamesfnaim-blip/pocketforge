@@ -250,12 +250,12 @@ internal fun RuntimeSetupPromptScreen(
                         if (preflight.is16KbPageSize) {
                             Surface(
                                 shape = RoundedCornerShape(10.dp),
-                                color = ForgeCyan.copy(alpha = 0.12f),
-                                border = BorderStroke(1.dp, ForgeCyan.copy(alpha = 0.35f)),
+                                color = ForgeCyberCyan.copy(alpha = 0.12f),
+                                border = BorderStroke(1.dp, ForgeCyberCyan.copy(alpha = 0.35f)),
                                 modifier = Modifier.fillMaxWidth(),
                             ) {
                                 Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
-                                    Icon(painterResource(R.drawable.ph_check_circle), null, tint = ForgeCyan, modifier = Modifier.size(16.dp))
+                                    Icon(painterResource(R.drawable.ph_check_circle), null, tint = ForgeCyberCyan, modifier = Modifier.size(16.dp))
                                     Spacer(Modifier.width(8.dp))
                                     Text(stringResource(R.string.runtime_setup_16k_note), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
                                 }

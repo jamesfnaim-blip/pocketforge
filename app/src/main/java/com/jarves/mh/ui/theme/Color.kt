@@ -42,6 +42,10 @@ val ForgeAmber = Color(0xFFF59E0B)
 val ForgeRose = Color(0xFFEF4444)
 val ForgeTerminalBg = Color(0xFF07080A)
 
+// --- Convenient Shorthand Aliases ---
+val ForgeIndigo = ForgeElectricIndigo
+val ForgeCyan = ForgeCyberCyan
+
 // --- Backward Compatibility Aliases ---
 val PocketOrange = ForgeElectricIndigo
 val PocketBlue = ForgeCyberCyan
