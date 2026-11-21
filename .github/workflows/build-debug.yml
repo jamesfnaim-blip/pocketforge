@@ -28,6 +28,7 @@ jobs:
 
       - name: Install Android SDK platform 36, NDK 28, and CMake
         run: |
+          export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
           echo "Accepting licenses..."
           yes | sdkmanager --licenses > /dev/null 2>&1 || true
           echo "Installing required SDK components..."
