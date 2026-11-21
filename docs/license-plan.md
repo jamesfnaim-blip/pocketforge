@@ -128,9 +128,9 @@ To ensure complete legal compliance and ethical attribution, notices will appear
 ### C. In-App User Interface ("Developer & Credits" Screen)
 - Under **Settings → Developer & Credits**:
   - **Developer Profile Card (Configurable Placeholders):**
-    - Name: `{YOUR_NAME}`
-    - Website: `{YOUR_WEBSITE}`
-    - LinkedIn: `{YOUR_LINKEDIN}`
+    - Name: `Nayem Hossain`
+    - Website: `https://nayemhsn.com`
+    - LinkedIn: `https://linkedin.com/in/nayemdevbd`
   - **Open-Source Credits Section:**
     - "Based on the pioneering architecture of **Mobile Harness** by Mobile Harness Contributors."
     - Button: **"View Mobile Harness Repository"** (opens `https://github.com/techjarves/Mobile-Harness`).

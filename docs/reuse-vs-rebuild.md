@@ -42,4 +42,4 @@
 | **Monolithic UI Host** | `ui/PocketDevApp.kt` (7,297 lines) | **REBUILD BETTER** | **Break down completely.** Decompose into individual modular screen files (`OnboardingScreen.kt`, `ProjectsScreen.kt`, `ChatScreen.kt`, etc.). | New Architecture. |
 | **Monolithic ViewModel** | `ui/MainViewModel.kt` (5,177 lines) | **REBUILD BETTER** | **Break down completely.** Split into scoped ViewModels (`ProjectsVM`, `ChatVM`, `TerminalVM`, `AndroidBuildVM`). | New Architecture. |
 | **Background Execution Engine** | `runtime/RuntimeExecutionService.kt`| **REBUILD BETTER** | **Supercharge.** Upgrade from basic wake lock to an enterprise engine with Phantom Process mitigation, session persistence daemon, and OEM battery killer guides. | Enhanced Architecture. |
-| **Developer Profile & Credits** | *(None in original)* | **NEW BUILD** | Beautiful developer card with `{YOUR_NAME}`, links, and comprehensive open-source license attribution. | New Component. |
+| **Developer Profile & Credits** | *(None in original)* | **NEW BUILD** | Beautiful developer card with `Nayem Hossain`, links, and comprehensive open-source license attribution. | New Component. |

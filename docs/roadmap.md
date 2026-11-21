@@ -153,6 +153,6 @@ This roadmap breaks down the complete construction of **PocketForge AI** into **
   - `app/src/main/java/com/pocketforge/ai/runtime/service/BackgroundRuntimeService.kt`
   - `app/src/main/java/com/pocketforge/ai/ui/screens/settings/OemOptimizationScreen.kt`
   - `app/src/main/java/com/pocketforge/ai/ui/screens/developer/DeveloperProfileScreen.kt`
-* **Definition of Done:** Agent tasks survive 15+ minutes with the phone screen turned off; Developer Profile displays `{YOUR_NAME}` and full open-source license attribution.
+* **Definition of Done:** Agent tasks survive 15+ minutes with the phone screen turned off; Developer Profile displays `Nayem Hossain` and full open-source license attribution.
 * **How to Test on Your Phone:** Start a build, turn off phone screen for 10 minutes -> verify build completes; open Settings -> Developer Profile -> verify your name, links, and license notices appear cleanly.
 * **Difficulty:** **Medium**

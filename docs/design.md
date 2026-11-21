@@ -258,13 +258,13 @@ The new design system adopts a sophisticated, developer-focused aesthetic: **Dee
 +-------------------------------------------------------------+
 |                                                             |
 |           [  Developer Profile Picture  ]                   |
-|                    {YOUR_NAME}                              |
+|                    Nayem Hossain                            |
 |        Full-Stack & Mobile Systems Enthusiast               |
 |                                                             |
 |  "Empowering everyone to build software anywhere, anytime." |
 |                                                             |
-|  🌐 Website:  {YOUR_WEBSITE}                                |
-|  💼 LinkedIn: {YOUR_LINKEDIN}                               |
+|  🌐 Website:  https://nayemhsn.com                          |
+|  💼 LinkedIn: https://linkedin.com/in/nayemdevbd            |
 |  📦 App Version: 1.0.0 (Build 100)                          |
 |                                                             |
 |  ---------------------------------------------------------  |

@@ -3,7 +3,7 @@
 **Project Name:** Mobile Harness Next (Working Title: **PocketForge AI**)  
 **Document Version:** 1.0.0  
 **Target Platform:** Android (ARM64-v8a, Android 9.0+ / API 28–36)  
-**Author / Maintainer:** {YOUR_NAME}  
+**Author / Maintainer:** Nayem Hossain  
 
 ---
 
@@ -119,7 +119,7 @@
 - **FR-074 (System Health Watchdog):** Dashboard showing live process tree, CPU usage, RAM consumption, and thermal throttling state.
 
 ### Module 9: Developer Profile, Credits & Licensing
-- **FR-080 (Developer Profile Screen):** Dedicated profile card displaying `{YOUR_NAME}`, biography, website (`{YOUR_WEBSITE}`), LinkedIn (`{YOUR_LINKEDIN}`), and changelog.
+- **FR-080 (Developer Profile Screen):** Dedicated profile card displaying `Nayem Hossain`, biography, website (`https://nayemhsn.com`), LinkedIn (`https://linkedin.com/in/nayemdevbd`), and changelog.
 - **FR-081 (Open-Source Attribution Screen):** Prominent attribution crediting the original Mobile Harness project, PRoot, talloc, libandroid-shmem, and all third-party libraries with links to original licenses.
 
 ---
