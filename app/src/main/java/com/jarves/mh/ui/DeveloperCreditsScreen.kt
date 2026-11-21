@@ -120,7 +120,7 @@ fun DeveloperCreditsScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp),
-                    horizontalAlignment = Alignment.CenterVertically,
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     // Profile Avatar Circle
                     Box(
