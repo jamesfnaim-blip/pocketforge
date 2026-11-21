@@ -147,7 +147,7 @@ internal fun ProjectsScreen(
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Chat,
+                            painter = painterResource(R.drawable.ph_sparkle),
                             contentDescription = null,
                             modifier = Modifier.size(17.dp),
                         )
@@ -167,7 +167,7 @@ internal fun ProjectsScreen(
                         contentPadding = PaddingValues(horizontal = 10.dp, vertical = 0.dp),
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Add,
+                            painter = painterResource(R.drawable.ph_plus),
                             contentDescription = null,
                             modifier = Modifier.size(18.dp),
                         )
@@ -206,7 +206,7 @@ internal fun ProjectsScreen(
                                 )
                             }
                             Icon(
-                                imageVector = if (isImportExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                                painter = painterResource(R.drawable.ph_caret_down),
                                 contentDescription = if (isImportExpanded) stringResource(R.string.ws_collapse) else stringResource(R.string.ws_expand),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                                 modifier = Modifier.size(20.dp),
@@ -221,7 +221,7 @@ internal fun ProjectsScreen(
                             ) {
                                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                                     ImportSourceButton(
-                                        icon = Icons.Default.Download,
+                                        iconRes = R.drawable.ph_download_simple,
                                         title = stringResource(if (state.projectImporting) R.string.projects_importing else R.string.projects_zip_file),
                                         enabled = !state.projectImporting && !state.gitCloneRunning,
                                         modifier = Modifier.weight(1f),
@@ -229,7 +229,7 @@ internal fun ProjectsScreen(
                                         loading = state.projectImporting,
                                     )
                                     ImportSourceButton(
-                                        icon = Icons.Default.Code,
+                                        iconRes = R.drawable.ph_code,
                                         title = stringResource(if (state.gitCloneRunning) R.string.projects_cloning else R.string.projects_git_url),
                                         enabled = !state.projectImporting && !state.gitCloneRunning,
                                         modifier = Modifier.weight(1f),
@@ -281,15 +281,15 @@ internal fun ProjectsScreen(
                         border = BorderStroke(1.dp, PocketOrange.copy(alpha = 0.45f)),
                     ) {
                         Row(Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically) {
-                            Surface(shape = CircleShape, color = PocketOrange.copy(alpha = 0.18f), modifier = Modifier.size(46.dp)) {
-                                Box(contentAlignment = Alignment.Center) { Icon(Icons.Default.Download, null, tint = PocketOrange) }
+                            Surface(shape = CircleShape, color = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f), modifier = Modifier.size(46.dp)) {
+                                Box(contentAlignment = Alignment.Center) { Icon(painterResource(R.drawable.ph_download_simple), null, tint = MaterialTheme.colorScheme.primary) }
                             }
                             Spacer(Modifier.width(12.dp))
                             Column(Modifier.weight(1f)) {
-                                Text("Mobile Harness ${update.versionName}", fontWeight = FontWeight.Bold)
+                                Text("PocketForge AI ${update.versionName}", fontWeight = FontWeight.Bold)
                                 Text(stringResource(R.string.ws_update_ready), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
-                            Text(stringResource(R.string.ws_update), color = PocketOrange, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            Text(stringResource(R.string.ws_update), color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                         }
                     }
                 }
@@ -313,14 +313,14 @@ internal fun ProjectsScreen(
                         ) {
                             Surface(
                                 shape = CircleShape,
-                                color = PocketOrange.copy(alpha = 0.15f),
+                                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
                                 modifier = Modifier.size(56.dp),
                             ) {
                                 Box(contentAlignment = Alignment.Center) {
                                     Icon(
-                                        Icons.Default.Folder,
+                                        painter = painterResource(R.drawable.ph_folder_simple),
                                         contentDescription = null,
-                                        tint = PocketOrange,
+                                        tint = MaterialTheme.colorScheme.primary,
                                         modifier = Modifier.size(28.dp),
                                     )
                                 }

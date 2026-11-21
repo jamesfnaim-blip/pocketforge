@@ -279,7 +279,7 @@ internal fun ChatTab(
                                 modifier = Modifier.size(40.dp),
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.AttachFile,
+                                    painter = painterResource(R.drawable.ph_paperclip),
                                     contentDescription = stringResource(R.string.chat_attach_files),
                                     modifier = Modifier.size(20.dp),
                                     tint = if (pendingAttachments.isNotEmpty()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
@@ -288,12 +288,12 @@ internal fun ChatTab(
                             DropdownMenu(expanded = attachMenuOpen, onDismissRequest = { attachMenuOpen = false }) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.chat_take_photo)) },
-                                    leadingIcon = { Icon(Icons.Default.PhotoCamera, null) },
+                                    leadingIcon = { Icon(painterResource(R.drawable.ph_camera), null, modifier = Modifier.size(18.dp)) },
                                     onClick = { attachMenuOpen = false; onTakePhoto() },
                                 )
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.chat_choose_files)) },
-                                    leadingIcon = { Icon(Icons.Default.AttachFile, null) },
+                                    leadingIcon = { Icon(painterResource(R.drawable.ph_paperclip), null, modifier = Modifier.size(18.dp)) },
                                     onClick = { attachMenuOpen = false; onAttach() },
                                 )
                             }
@@ -341,10 +341,10 @@ internal fun ChatTab(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.Stop,
+                                    painter = painterResource(R.drawable.ph_x_circle),
                                     contentDescription = stringResource(R.string.ws_stop_ai_task),
                                     tint = MaterialTheme.colorScheme.onError,
-                                    modifier = Modifier.size(18.dp),
+                                    modifier = Modifier.size(20.dp),
                                 )
                             }
                             if (canSend) Spacer(Modifier.width(6.dp))
@@ -369,7 +369,7 @@ internal fun ChatTab(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 Icon(
-                                    imageVector = Icons.Default.ArrowUpward,
+                                    painter = painterResource(R.drawable.ph_paper_plane_right),
                                     contentDescription = stringResource(R.string.chat_send),
                                     tint = if (canSend) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
                                     modifier = Modifier.size(19.dp),

@@ -38,8 +38,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.jarves.mh.R
+import com.jarves.mh.ui.theme.ForgeElectricIndigo
+import com.jarves.mh.ui.theme.ForgeEmerald
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -218,10 +221,10 @@ private fun CodeSnippetBlock(block: MarkdownBlock.CodeBlock, onRunCode: ((String
                             modifier = Modifier.size(28.dp),
                         ) {
                             Icon(
-                                Icons.Default.PlayArrow,
+                                painter = painterResource(R.drawable.ph_play),
                                 contentDescription = stringResource(R.string.ws_md_run_in_terminal),
-                                tint = PocketOrange,
-                                modifier = Modifier.size(18.dp),
+                                tint = ForgeElectricIndigo,
+                                modifier = Modifier.size(16.dp),
                             )
                         }
                     }
@@ -237,9 +240,9 @@ private fun CodeSnippetBlock(block: MarkdownBlock.CodeBlock, onRunCode: ((String
                         modifier = Modifier.size(28.dp),
                     ) {
                         Icon(
-                            imageVector = if (copied) Icons.Default.Check else Icons.Default.ContentCopy,
+                            painter = painterResource(if (copied) R.drawable.ph_check_circle else R.drawable.ph_sparkle),
                             contentDescription = stringResource(R.string.ws_md_copy_code),
-                            tint = if (copied) PocketOrange else Color(0xFF9AA0A6),
+                            tint = if (copied) ForgeEmerald else Color(0xFF9AA0A6),
                             modifier = Modifier.size(16.dp),
                         )
                     }

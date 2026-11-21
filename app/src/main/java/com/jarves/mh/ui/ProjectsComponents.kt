@@ -75,7 +75,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 internal fun ImportSourceButton(
-    icon: ImageVector,
+    icon: ImageVector? = null,
+    iconRes: Int? = null,
     title: String,
     enabled: Boolean,
     loading: Boolean,
@@ -90,7 +91,8 @@ internal fun ImportSourceButton(
         contentPadding = PaddingValues(horizontal = 10.dp),
     ) {
         if (loading) CircularProgressIndicator(Modifier.size(16.dp), strokeWidth = 2.dp)
-        else Icon(icon, null, Modifier.size(17.dp))
+        else if (iconRes != null) Icon(painterResource(iconRes), null, Modifier.size(17.dp))
+        else if (icon != null) Icon(icon, null, Modifier.size(17.dp))
         Spacer(Modifier.width(7.dp))
         Text(title, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1)
     }

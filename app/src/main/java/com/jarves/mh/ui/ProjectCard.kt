@@ -91,10 +91,10 @@ internal fun ProjectCard(
         Row(Modifier.padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp), verticalAlignment = Alignment.CenterVertically) {
             Surface(shape = RoundedCornerShape(14.dp), color = MaterialTheme.colorScheme.surfaceVariant) {
                 Icon(
-                    if (project.type == ProjectType.ANDROID) Icons.Default.Android else Icons.Default.Folder,
-                    null,
-                    Modifier.padding(13.dp),
-                    tint = if (project.type == ProjectType.ANDROID) PocketGreen else PocketOrange,
+                    painter = painterResource(if (project.type == ProjectType.ANDROID) R.drawable.ph_sparkle else R.drawable.ph_folder_simple),
+                    contentDescription = null,
+                    modifier = Modifier.padding(13.dp),
+                    tint = if (project.type == ProjectType.ANDROID) ForgeEmerald else MaterialTheme.colorScheme.primary,
                 )
             }
             Spacer(Modifier.width(13.dp))
@@ -137,12 +137,12 @@ internal fun ProjectCard(
                 DropdownMenu(expanded = menuOpen, onDismissRequest = { menuOpen = false }) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.ws_rename_project)) },
-                        leadingIcon = { Icon(Icons.Default.Edit, null) },
+                        leadingIcon = { Icon(painterResource(R.drawable.ph_pencil_simple), null, modifier = Modifier.size(16.dp)) },
                         onClick = { menuOpen = false; renameText = project.name; showRename = true },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.ws_delete_project)) },
-                        leadingIcon = { Icon(Icons.Default.Delete, null, tint = MaterialTheme.colorScheme.error) },
+                        leadingIcon = { Icon(painterResource(R.drawable.ph_trash), null, tint = MaterialTheme.colorScheme.error, modifier = Modifier.size(16.dp)) },
                         onClick = { menuOpen = false; showDelete = true },
                     )
                 }
