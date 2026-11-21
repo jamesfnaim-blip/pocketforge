@@ -1,9 +1,12 @@
 # Milestone 1: Rebranding, Legal Credits & Developer Screen
 
-- **Status:** COMPLETED (Committed, Pushed, CI In-Progress)
+- **Status:** COMPLETED (Verified CI Green Build in 2m 18s)
 - **Date:** 2026-11-21
 - **Repository:** [jamesfnaim-blip/pocketforge](https://github.com/jamesfnaim-blip/pocketforge)
-- **Commit:** `feat: rebrand to PocketForge AI and add Developer & Credits screen (M1)`
+- **CI Run ID:** [44901271379](https://github.com/jamesfnaim-blip/pocketforge/actions/runs/44901271379)
+- **Build Duration:** 2 minutes 18 seconds
+- **Commit:** `6f6afd3` (`fix(ui): use Alignment.CenterHorizontally in DeveloperCreditsScreen column`)
+- **Artifact Name:** `pocketforge-baseline-apk`
 
 ---
 
