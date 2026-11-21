@@ -7,6 +7,7 @@ enum class AppLanguage(
 ) {
     SYSTEM("system", "System Default", "Default"),
     ENGLISH("en", "English", "English"),
+    BENGALI("bn", "Bengali", "বাংলা"),
     SPANISH("es", "Spanish", "Español"),
     CHINESE("zh", "Chinese (Simplified)", "简体中文"),
     ARABIC("ar", "Arabic", "العربية"),

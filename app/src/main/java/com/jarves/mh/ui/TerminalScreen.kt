@@ -310,7 +310,7 @@ fun TerminalScreen(
             }
 
             val isDark = when (themeMode) {
-                AppThemeMode.DARK -> true
+                AppThemeMode.DARK, AppThemeMode.AMOLED -> true
                 AppThemeMode.LIGHT -> false
                 AppThemeMode.SYSTEM -> isSystemInDarkTheme()
             }

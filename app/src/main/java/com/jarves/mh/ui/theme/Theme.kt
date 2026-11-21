@@ -11,60 +11,97 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
-val PocketOrange = Color(0xFFF28C52)
-val PocketBlue = Color(0xFF8EA8FF)
-val PocketGreen = Color(0xFF69D69E)
-val PocketBackground = Color(0xFF0B0E14)
-val PocketSurface = Color(0xFF131821)
-val PocketSurfaceVariant = Color(0xFF1B222D)
-val PocketOutline = Color(0xFF2A3240)
-
-private val DarkColors = darkColorScheme(
-    primary = PocketOrange,
-    onPrimary = Color(0xFF241107),
-    primaryContainer = Color(0xFF42281D),
-    onPrimaryContainer = Color(0xFFFFDDCC),
-    secondary = PocketBlue,
-    onSecondary = Color(0xFF001F58),
-    tertiary = PocketGreen,
-    onTertiary = Color(0xFF00391E),
-    background = PocketBackground,
-    onBackground = Color(0xFFE6EDF3),
-    surface = PocketSurface,
-    onSurface = Color(0xFFE6EDF3),
-    surfaceVariant = PocketSurfaceVariant,
-    onSurfaceVariant = Color(0xFF9AA0A6),
-    outline = PocketOutline,
+// --- Obsidian Dark Scheme (Default) ---
+private val ObsidianColors = darkColorScheme(
+    primary = ForgeElectricIndigo,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFF1E1B4B),
+    onPrimaryContainer = Color(0xFFE0E7FF),
+    secondary = ForgeCyberCyan,
+    onSecondary = Color(0xFF00363A),
+    secondaryContainer = Color(0xFF004D40),
+    onSecondaryContainer = Color(0xFFE0F7FA),
+    tertiary = ForgeEmerald,
+    onTertiary = Color.White,
+    background = ForgeObsidianBackground,
+    onBackground = ForgeObsidianTextPrimary,
+    surface = ForgeObsidianSurface,
+    onSurface = ForgeObsidianTextPrimary,
+    surfaceVariant = ForgeObsidianSurfaceElevated,
+    onSurfaceVariant = ForgeObsidianTextSecondary,
+    outline = ForgeObsidianBorder,
     outlineVariant = Color(0xFF333B4A),
+    error = ForgeRose,
+    onError = Color.White,
 )
 
-private val LightColors = lightColorScheme(
-    primary = Color(0xFFD85A20),
-    onPrimary = Color(0xFFFFFFFF),
-    primaryContainer = Color(0xFFFFE0D2),
-    onPrimaryContainer = Color(0xFF451A08),
-    secondary = Color(0xFF3366CC),
-    onSecondary = Color(0xFFFFFFFF),
-    tertiary = Color(0xFF1B8A5A),
-    onTertiary = Color(0xFFFFFFFF),
-    background = Color(0xFFF6F8FA),
-    onBackground = Color(0xFF1F2328),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1F2328),
-    surfaceVariant = Color(0xFFEAEFF5),
-    onSurfaceVariant = Color(0xFF57606A),
-    outline = Color(0xFFD0D7DE),
-    outlineVariant = Color(0xFFD8DEE4),
+// --- AMOLED Black Scheme (100% Pure Black for OLED Battery Savings) ---
+private val AmoledColors = darkColorScheme(
+    primary = ForgeElectricIndigo,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFF1E1B4B),
+    onPrimaryContainer = Color(0xFFE0E7FF),
+    secondary = ForgeCyberCyan,
+    onSecondary = Color(0xFF00363A),
+    secondaryContainer = Color(0xFF003333),
+    onSecondaryContainer = Color(0xFFE0F7FA),
+    tertiary = ForgeEmerald,
+    onTertiary = Color.White,
+    background = ForgeAmoledBackground,
+    onBackground = ForgeAmoledTextPrimary,
+    surface = ForgeAmoledSurface,
+    onSurface = ForgeAmoledTextPrimary,
+    surfaceVariant = ForgeAmoledSurfaceElevated,
+    onSurfaceVariant = ForgeAmoledTextSecondary,
+    outline = ForgeAmoledBorder,
+    outlineVariant = Color(0xFF262626),
+    error = ForgeRose,
+    onError = Color.White,
 )
 
-enum class AppThemeMode { SYSTEM, DARK, LIGHT }
+// --- Clean Light Scheme ---
+private val CleanLightColors = lightColorScheme(
+    primary = ForgeElectricIndigo,
+    onPrimary = Color.White,
+    primaryContainer = Color(0xFFEEF2FF),
+    onPrimaryContainer = Color(0xFF312E81),
+    secondary = Color(0xFF0891B2),
+    onSecondary = Color.White,
+    secondaryContainer = Color(0xFFECFEFF),
+    onSecondaryContainer = Color(0xFF155E75),
+    tertiary = Color(0xFF059669),
+    onTertiary = Color.White,
+    background = ForgeLightBackground,
+    onBackground = ForgeLightTextPrimary,
+    surface = ForgeLightSurface,
+    onSurface = ForgeLightTextPrimary,
+    surfaceVariant = Color(0xFFF1F5F9),
+    onSurfaceVariant = ForgeLightTextSecondary,
+    outline = ForgeLightBorder,
+    outlineVariant = Color(0xFFCBD5E1),
+    error = ForgeRose,
+    onError = Color.White,
+)
+
+enum class AppThemeMode { SYSTEM, DARK, LIGHT, AMOLED }
 
 @Composable
-fun PocketTheme(themeMode: AppThemeMode = AppThemeMode.SYSTEM, content: @Composable () -> Unit) {
+fun ForgeTheme(
+    themeMode: AppThemeMode = AppThemeMode.SYSTEM,
+    content: @Composable () -> Unit,
+) {
+    val isSystemDark = isSystemInDarkTheme()
     val isDark = when (themeMode) {
-        AppThemeMode.DARK -> true
+        AppThemeMode.DARK, AppThemeMode.AMOLED -> true
         AppThemeMode.LIGHT -> false
-        AppThemeMode.SYSTEM -> isSystemInDarkTheme()
+        AppThemeMode.SYSTEM -> isSystemDark
+    }
+
+    val colorScheme = when (themeMode) {
+        AppThemeMode.AMOLED -> AmoledColors
+        AppThemeMode.DARK -> ObsidianColors
+        AppThemeMode.LIGHT -> CleanLightColors
+        AppThemeMode.SYSTEM -> if (isSystemDark) ObsidianColors else CleanLightColors
     }
 
     val view = LocalView.current
@@ -78,7 +115,13 @@ fun PocketTheme(themeMode: AppThemeMode = AppThemeMode.SYSTEM, content: @Composa
     }
 
     MaterialTheme(
-        colorScheme = if (isDark) DarkColors else LightColors,
+        colorScheme = colorScheme,
+        typography = ForgeTypography,
         content = content,
     )
+}
+
+@Composable
+fun PocketTheme(themeMode: AppThemeMode = AppThemeMode.SYSTEM, content: @Composable () -> Unit) {
+    ForgeTheme(themeMode = themeMode, content = content)
 }

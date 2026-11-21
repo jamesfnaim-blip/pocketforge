@@ -241,6 +241,7 @@ fun SettingsScreen(
                     title = stringResource(R.string.settings_appearance),
                     subtitle = when (state.themeMode) {
                         AppThemeMode.DARK -> stringResource(R.string.theme_dark_subtitle)
+                        AppThemeMode.AMOLED -> "AMOLED Black"
                         AppThemeMode.LIGHT -> stringResource(R.string.theme_light_subtitle)
                         AppThemeMode.SYSTEM -> stringResource(R.string.theme_system_subtitle)
                     },
