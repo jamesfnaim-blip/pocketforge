@@ -1,0 +1,56 @@
+name: Build PocketForge Baseline Debug APK
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Baseline Debug APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository with submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Install Android SDK platform 36, NDK 28, and CMake
+        run: |
+          echo "Accepting licenses..."
+          yes | sdkmanager --licenses > /dev/null 2>&1 || true
+          echo "Installing required SDK components..."
+          sdkmanager --install "platforms;android-36" "build-tools;35.0.0" "ndk;28.2.13676358" "cmake;3.22.1"
+
+      - name: Download bundled agent runtime asset
+        run: |
+          mkdir -p dist/runtime-bundles
+          if [ ! -f dist/runtime-bundles/pocketdev-agy-arm64-2026.09.1.tar.zst ]; then
+            echo "Downloading pocketdev-agy-arm64-2026.09.1.tar.zst..."
+            curl -L -f -o dist/runtime-bundles/pocketdev-agy-arm64-2026.09.1.tar.zst \
+              https://github.com/techjarves/Mobile-Harness/releases/download/runtime-2026.09.4/pocketdev-agy-arm64-2026.09.1.tar.zst
+          fi
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
+
+      - name: Build Online Debug APK
+        run: ./gradlew assembleOnlineDebug --stacktrace
+
+      - name: Upload Baseline APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: pocketforge-baseline-apk
+          path: app/build/outputs/apk/online/debug/*.apk
+          if-no-files-found: error
