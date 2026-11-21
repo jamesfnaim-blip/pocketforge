@@ -328,19 +328,41 @@ internal fun ProviderCredentialsStep(
         }
         if (status != null) {
             item {
-                Text(
-                    status.orEmpty(),
-                    color = if (statusOk) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error,
-                    fontSize = 13.sp,
-                )
-                statusDetails?.takeIf(String::isNotBlank)?.let { details ->
-                    Spacer(Modifier.height(4.dp))
-                    Text(
-                        details,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 11.sp,
-                        lineHeight = 15.sp,
-                    )
+                Surface(
+                    color = if (statusOk) ForgeEmerald.copy(alpha = 0.12f) else MaterialTheme.colorScheme.error.copy(alpha = 0.12f),
+                    shape = RoundedCornerShape(14.dp),
+                    border = BorderStroke(1.dp, if (statusOk) ForgeEmerald.copy(alpha = 0.4f) else MaterialTheme.colorScheme.error.copy(alpha = 0.4f)),
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Row(
+                        modifier = Modifier.padding(14.dp),
+                        verticalAlignment = Alignment.Top,
+                    ) {
+                        Icon(
+                            painter = painterResource(if (statusOk) R.drawable.ph_check_circle else R.drawable.ph_warning_circle),
+                            contentDescription = null,
+                            tint = if (statusOk) ForgeEmerald else MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(20.dp).padding(top = 1.dp),
+                        )
+                        Spacer(Modifier.width(10.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(
+                                text = status.orEmpty(),
+                                fontWeight = FontWeight.SemiBold,
+                                fontSize = 13.5.sp,
+                                color = if (statusOk) ForgeEmerald else MaterialTheme.colorScheme.error,
+                            )
+                            statusDetails?.takeIf(String::isNotBlank)?.let { details ->
+                                Spacer(Modifier.height(3.dp))
+                                Text(
+                                    text = details,
+                                    fontSize = 11.5.sp,
+                                    lineHeight = 16.sp,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

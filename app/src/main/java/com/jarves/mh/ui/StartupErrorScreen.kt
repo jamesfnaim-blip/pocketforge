@@ -93,7 +93,7 @@ internal fun StartupErrorScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         BrandMark(compact = true)
                         Spacer(Modifier.width(9.dp))
-                        Text("Mobile Harness", fontWeight = FontWeight.Bold)
+                        Text("PocketForge AI", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {

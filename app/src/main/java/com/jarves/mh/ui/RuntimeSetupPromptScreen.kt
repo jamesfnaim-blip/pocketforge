@@ -87,14 +87,8 @@ internal fun RuntimeSetupPromptScreen(
     onDownload: () -> Unit,
 ) {
     val context = LocalContext.current
-    val activityManager = context.getSystemService(ActivityManager::class.java)
-    val memoryInfo = remember { ActivityManager.MemoryInfo().also(activityManager::getMemoryInfo) }
-    val totalRamGb = memoryInfo.totalMem.toDouble() / 1_073_741_824.0
-    val totalRamLabel = String.format(java.util.Locale.US, "%.1f", totalRamGb)
-    val arm64 = supportsArm64Runtime(Build.SUPPORTED_ABIS, System.getProperty("os.arch"))
-    // Android reports usable physical memory after hardware/GPU reservations.
-    // RAM is therefore informational; it must not reject nominal 4 GB phones.
-    val compatible = arm64
+    val preflight = remember { checkHardwarePreflight(context) }
+    val compatible = preflight.isCompatible
 
     var currentStep by remember { mutableIntStateOf(0) }
     val setupScrollState = rememberScrollState()
@@ -115,7 +109,7 @@ internal fun RuntimeSetupPromptScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         BrandMark(compact = true)
                         Spacer(Modifier.width(9.dp))
-                        Text("Mobile Harness", fontWeight = FontWeight.Bold)
+                        Text("PocketForge AI", fontWeight = FontWeight.Bold)
                     }
                 },
                 navigationIcon = {
@@ -226,31 +220,62 @@ internal fun RuntimeSetupPromptScreen(
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f), thickness = 1.dp)
 
                         SpecRow(
-                            icon = Icons.Default.Memory,
-                            label = stringResource(R.string.runtime_setup_memory_ram),
-                            value = stringResource(R.string.runtime_setup_ram_usable, totalRamLabel),
-                            statusOk = true,
-                        )
-
-                        SpecRow(
-                            icon = Icons.Default.Code,
+                            iconRes = R.drawable.ph_cpu,
                             label = stringResource(R.string.runtime_setup_processor),
-                            value = Build.SUPPORTED_ABIS.firstOrNull() ?: "arm64-v8a",
-                            statusOk = arm64,
+                            value = "${preflight.primaryAbi} (ARM64)",
+                            statusOk = preflight.isArm64,
                         )
 
                         SpecRow(
-                            icon = Icons.Default.Storage,
-                            label = stringResource(R.string.runtime_setup_download_req),
-                            value = stringResource(R.string.runtime_setup_download_range),
+                            iconRes = R.drawable.ph_sparkle,
+                            label = stringResource(R.string.runtime_setup_page_size),
+                            value = if (preflight.is16KbPageSize) stringResource(R.string.runtime_setup_16k_supported) else stringResource(R.string.runtime_setup_4k_standard),
                             statusOk = true,
                         )
-                        Text(
-                            stringResource(R.string.runtime_setup_download_based_on_tools),
-                            modifier = Modifier.padding(start = 26.dp),
-                            fontSize = 10.5.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+
+                        SpecRow(
+                            iconRes = R.drawable.ph_shield_check,
+                            label = stringResource(R.string.runtime_setup_memory_ram),
+                            value = stringResource(R.string.runtime_setup_ram_usable, String.format(Locale.US, "%.1f", preflight.totalRamGb)),
+                            statusOk = !preflight.ramWarning,
                         )
+
+                        SpecRow(
+                            iconRes = R.drawable.ph_download_simple,
+                            label = stringResource(R.string.runtime_setup_storage_free),
+                            value = String.format(Locale.US, "%.1f GB", preflight.availableDiskGb),
+                            statusOk = !preflight.diskWarning,
+                        )
+
+                        if (preflight.is16KbPageSize) {
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = ForgeCyan.copy(alpha = 0.12f),
+                                border = BorderStroke(1.dp, ForgeCyan.copy(alpha = 0.35f)),
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(painterResource(R.drawable.ph_check_circle), null, tint = ForgeCyan, modifier = Modifier.size(16.dp))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(stringResource(R.string.runtime_setup_16k_note), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
+                                }
+                            }
+                        }
+
+                        if (preflight.diskWarning) {
+                            Surface(
+                                shape = RoundedCornerShape(10.dp),
+                                color = ForgeAmber.copy(alpha = 0.12f),
+                                border = BorderStroke(1.dp, ForgeAmber.copy(alpha = 0.35f)),
+                                modifier = Modifier.fillMaxWidth(),
+                            ) {
+                                Row(Modifier.padding(10.dp), verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(painterResource(R.drawable.ph_warning_circle), null, tint = ForgeAmber, modifier = Modifier.size(16.dp))
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(stringResource(R.string.runtime_setup_storage_low_warning), fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
+                                }
+                            }
+                        }
                     }
                 }
 

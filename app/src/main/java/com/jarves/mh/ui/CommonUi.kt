@@ -108,7 +108,7 @@ internal fun BrandMark(modifier: Modifier = Modifier, compact: Boolean = false) 
     ) {
         Icon(
             imageVector = Icons.Default.Terminal,
-            contentDescription = "Mobile Harness",
+            contentDescription = "PocketForge AI",
             modifier = Modifier.size(iconSize),
             tint = primary,
         )

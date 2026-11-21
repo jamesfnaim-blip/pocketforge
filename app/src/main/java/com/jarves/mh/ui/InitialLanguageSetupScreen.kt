@@ -90,13 +90,13 @@ internal fun InitialLanguageSetupScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         BrandMark(compact = true)
                         Spacer(Modifier.width(9.dp))
-                        Text("Mobile Harness", fontWeight = FontWeight.Bold)
+                        Text("PocketForge AI", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {
                     IconButton(onClick = onToggleTheme) {
                         Icon(
-                            if (themeMode == AppThemeMode.DARK) Icons.Default.LightMode else Icons.Default.DarkMode,
+                            painter = painterResource(R.drawable.ph_sparkle),
                             contentDescription = stringResource(R.string.theme_toggle),
                         )
                     }
@@ -121,7 +121,7 @@ internal fun InitialLanguageSetupScreen(
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
-                        Icons.Default.Language,
+                        painter = painterResource(R.drawable.ph_globe),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(24.dp),
@@ -184,7 +184,7 @@ internal fun InitialLanguageSetupScreen(
                             }
                             if (isSelected) {
                                 Icon(
-                                    Icons.Default.Check,
+                                    painter = painterResource(R.drawable.ph_check_circle),
                                     contentDescription = stringResource(R.string.ws_selected),
                                     tint = MaterialTheme.colorScheme.primary,
                                     modifier = Modifier.size(20.dp),

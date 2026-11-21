@@ -156,7 +156,7 @@ internal fun RuntimeInstallationScreen(
                 actions = {
                     IconButton(onClick = onToggleTheme) {
                         Icon(
-                            if (themeMode == AppThemeMode.DARK) Icons.Default.LightMode else Icons.Default.DarkMode,
+                            painter = painterResource(R.drawable.ph_sparkle),
                             contentDescription = stringResource(R.string.theme_toggle),
                         )
                     }
@@ -176,7 +176,7 @@ internal fun RuntimeInstallationScreen(
                     stringResource(R.string.bg_step_indicator, 1, 3),
                     fontSize = 10.sp,
                     fontWeight = FontWeight.Bold,
-                    color = PocketOrange,
+                    color = MaterialTheme.colorScheme.primary,
                     letterSpacing = 1.1.sp,
                 )
                 Spacer(Modifier.weight(1f))
@@ -188,7 +188,7 @@ internal fun RuntimeInstallationScreen(
                         modifier = Modifier.padding(horizontal = 9.dp, vertical = 4.dp),
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Icon(Icons.Default.Shield, null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(12.dp))
+                        Icon(painterResource(R.drawable.ph_shield_check), null, tint = MaterialTheme.colorScheme.onSurfaceVariant, modifier = Modifier.size(12.dp))
                         Spacer(Modifier.width(5.dp))
                         Text(stringResource(R.string.setup_local_badge), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 10.sp, fontWeight = FontWeight.SemiBold)
                     }

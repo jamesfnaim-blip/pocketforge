@@ -119,10 +119,10 @@ internal fun BackgroundTaskSetupScreen(
         batteryGranted = batteryUnrestricted()
     }
 
-    val currentIcon = when (currentStep) {
-        0 -> Icons.Default.Notifications
-        1 -> Icons.Default.BatterySaver
-        else -> Icons.Default.Shield
+    val currentIconRes = when (currentStep) {
+        0 -> R.drawable.ph_bell
+        1 -> R.drawable.ph_shield_check
+        else -> R.drawable.ph_shield_check
     }
     val currentTitle = when (currentStep) {
         0 -> stringResource(R.string.bg_notifications_title)
@@ -153,14 +153,14 @@ internal fun BackgroundTaskSetupScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         BrandMark(compact = true)
                         Spacer(Modifier.width(9.dp))
-                        Text("Mobile Harness", fontWeight = FontWeight.Bold)
+                        Text("PocketForge AI", fontWeight = FontWeight.Bold)
                     }
                 },
                 actions = {
                     LanguagePickerAction(currentLanguageCode, onSetLanguage)
                     IconButton(onClick = onToggleTheme) {
                         Icon(
-                            if (themeMode == AppThemeMode.DARK) Icons.Default.LightMode else Icons.Default.DarkMode,
+                            painter = painterResource(R.drawable.ph_sparkle),
                             contentDescription = stringResource(R.string.theme_toggle),
                         )
                     }
@@ -196,11 +196,11 @@ internal fun BackgroundTaskSetupScreen(
                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             ) {
                 Column {
-                    PermissionSummaryRow(Icons.Default.Notifications, stringResource(R.string.bg_step_notifications), notificationGranted, currentStep == 0)
+                    PermissionSummaryRow(iconRes = R.drawable.ph_bell, title = stringResource(R.string.bg_step_notifications), complete = notificationGranted, active = currentStep == 0)
                     HorizontalDivider(modifier = Modifier.padding(start = 58.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-                    PermissionSummaryRow(Icons.Default.BatterySaver, stringResource(R.string.bg_step_background), batteryGranted, currentStep == 1)
+                    PermissionSummaryRow(iconRes = R.drawable.ph_shield_check, title = stringResource(R.string.bg_step_background), complete = batteryGranted, active = currentStep == 1)
                     HorizontalDivider(modifier = Modifier.padding(start = 58.dp), color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
-                    PermissionSummaryRow(Icons.Default.Shield, stringResource(R.string.bg_step_task_protection), taskProtectionConfirmed, currentStep == 2)
+                    PermissionSummaryRow(iconRes = R.drawable.ph_shield_check, title = stringResource(R.string.bg_step_task_protection), complete = taskProtectionConfirmed, active = currentStep == 2)
                 }
             }
 
@@ -217,14 +217,14 @@ internal fun BackgroundTaskSetupScreen(
                             Modifier.size(40.dp).background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f), RoundedCornerShape(11.dp)),
                             contentAlignment = Alignment.Center,
                         ) {
-                            Icon(currentIcon, null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(21.dp))
+                            Icon(painterResource(currentIconRes), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(21.dp))
                         }
                         Spacer(Modifier.width(12.dp))
                         Column(Modifier.weight(1f)) {
                             Text(stringResource(R.string.bg_step_indicator, currentStep + 1, 3), color = MaterialTheme.colorScheme.primary, fontSize = 9.sp, fontWeight = FontWeight.Bold, letterSpacing = 0.8.sp)
                             Text(currentTitle, color = MaterialTheme.colorScheme.onSurface, fontSize = 15.sp, fontWeight = FontWeight.SemiBold)
                         }
-                        if (currentGranted) Icon(Icons.Default.Check, stringResource(R.string.bg_status_granted), tint = PocketGreen)
+                        if (currentGranted) Icon(painterResource(R.drawable.ph_check_circle), stringResource(R.string.bg_status_granted), tint = ForgeEmerald)
                     }
                     Spacer(Modifier.height(14.dp))
                     Text(currentDescription, color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 13.sp, lineHeight = 18.sp)
@@ -319,7 +319,8 @@ internal fun BackgroundTaskSetupScreen(
 
 @Composable
 internal fun PermissionSummaryRow(
-    icon: ImageVector,
+    icon: ImageVector? = null,
+    iconRes: Int? = null,
     title: String,
     complete: Boolean,
     active: Boolean,
@@ -331,12 +332,21 @@ internal fun PermissionSummaryRow(
             .padding(horizontal = 14.dp, vertical = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(
-            icon,
-            null,
-            tint = if (active) MaterialTheme.colorScheme.primary else if (complete) PocketGreen else MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.size(18.dp),
-        )
+        if (iconRes != null) {
+            Icon(
+                painter = painterResource(iconRes),
+                contentDescription = null,
+                tint = if (active) MaterialTheme.colorScheme.primary else if (complete) ForgeEmerald else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp),
+            )
+        } else if (icon != null) {
+            Icon(
+                icon,
+                null,
+                tint = if (active) MaterialTheme.colorScheme.primary else if (complete) ForgeEmerald else MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.size(18.dp),
+            )
+        }
         Spacer(Modifier.width(12.dp))
         Text(
             title,
@@ -346,7 +356,7 @@ internal fun PermissionSummaryRow(
             fontWeight = if (active) FontWeight.SemiBold else FontWeight.Medium,
         )
         when {
-            complete -> Icon(Icons.Default.Check, stringResource(R.string.bg_status_granted), tint = PocketGreen, modifier = Modifier.size(18.dp))
+            complete -> Icon(painterResource(R.drawable.ph_check_circle), stringResource(R.string.bg_status_granted), tint = ForgeEmerald, modifier = Modifier.size(18.dp))
             active -> Text(stringResource(R.string.bg_status_required), color = MaterialTheme.colorScheme.primary, fontSize = 11.sp, fontWeight = FontWeight.SemiBold)
             else -> Text(stringResource(R.string.bg_status_next), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
         }
