@@ -1,20 +1,19 @@
 <div align="center">
 
-  <img src="assets/readme/logo.svg" alt="Mobile Harness Logo" width="104" height="104" style="border-radius: 24px;" />
+  <img src="docs/mockups/assets/logo.svg" alt="PocketForge AI Logo" width="104" height="104" style="border-radius: 24px;" />
 
-  # Mobile Harness
+  # PocketForge AI
 
   ### *The complete autonomous AI development workspace for Android.*
 
   **Chat with coding agents, edit projects, execute real Linux commands, and preview live web servers — all directly on your phone.**
 
-  > **Note**: Baseline build of Mobile Harness (MIT), fork in progress for PocketForge AI.
+  > **Maintained by [Nayem Hossain](https://nayemhsn.com)** · Forked and evolved from Mobile Harness (MIT)
 
   <br />
 
-  [![Latest release](https://img.shields.io/github/v/release/techjarves/Mobile-Harness?label=Release&color=F28C52&style=flat-square&logo=github&logoColor=white)](https://github.com/techjarves/Mobile-Harness/releases/latest)
-  [![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84?style=flat-square&logo=android&logoColor=white)](#system-requirements)
   [![ARM64](https://img.shields.io/badge/CPU-ARM64-5B8DEF?style=flat-square)](#system-requirements)
+  [![Android 9+](https://img.shields.io/badge/Android-9%2B-3DDC84?style=flat-square&logo=android&logoColor=white)](#system-requirements)
   [![MIT License](https://img.shields.io/badge/License-MIT-8B7CF6?style=flat-square&logo=opensourceinitiative&logoColor=white)](LICENSE)
   [![Watch demo](https://img.shields.io/badge/Watch-Demo-FF0000?style=flat-square&logo=youtube&logoColor=white)](https://www.youtube.com/techjarves)
 

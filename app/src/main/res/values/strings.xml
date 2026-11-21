@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mobile Harness</string>
+    <string name="app_name">PocketForge AI</string>
 
     <!-- Navigation / Bottom Tabs -->
     <string name="tab_projects">Projects</string>
@@ -39,7 +39,7 @@
     <string name="settings_runtime">Linux runtime</string>
     <string name="settings_privacy">Privacy policy</string>
     <string name="settings_privacy_desc">How local data and AI provider requests are handled</string>
-    <string name="settings_app_desc">Local AI coding workspace</string>
+    <string name="settings_app_desc">Autonomous AI development workspace for Android</string>
 
     <!-- Theme Modes -->
     <string name="theme_dark">Dark</string>

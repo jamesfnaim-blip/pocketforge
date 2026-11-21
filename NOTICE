@@ -1,0 +1,29 @@
+PocketForge AI
+Copyright (c) 2026 Nayem Hossain and PocketForge Contributors
+
+This product includes software developed by third parties:
+
+1. Mobile Harness
+   Copyright (c) 2026 TechJarves
+   Licensed under the MIT License
+   https://github.com/techjarves/Mobile-Harness
+
+2. PRoot (Rootless chroot / ptrace engine)
+   Copyright (c) 2014-2026 Cedric Vincent and Termux Contributors
+   Licensed under the GNU General Public License v2.0 (GPL-2.0)
+   https://github.com/termux/proot
+
+3. Phosphor Icons
+   Copyright (c) 2020 Phosphor Icons
+   Licensed under the MIT License
+   https://github.com/phosphor-icons/core
+
+4. talloc (Hierarchical reference-counted memory pool system)
+   Copyright (c) Andrew Tridgell, Stefan Metzmacher, Simo Sorce
+   Licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0)
+   https://talloc.samba.org
+
+5. libandroid-shmem (System V shared memory emulation for Android)
+   Copyright (c) 2016-2026 Termux Contributors
+   Licensed under the BSD 3-Clause License
+   https://github.com/termux/libandroid-shmem
