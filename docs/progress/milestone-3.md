@@ -1,8 +1,11 @@
 # Milestone 3: Guided Onboarding & Setup Experience
 
-- **Status:** COMPLETED & PUSHED TO CI
+- **Status:** VERIFIED & COMPLETED (CI Build 44905494895)
 - **Date:** 2026-11-21
 - **Repository:** [jamesfnaim-blip/pocketforge](https://github.com/jamesfnaim-blip/pocketforge)
+- **CI Run ID:** [44905494895](https://github.com/jamesfnaim-blip/pocketforge/actions/runs/44905494895) (Duration: 2m 54s)
+- **Artifact:** `pocketforge-baseline-apk` (debug APK with full PRoot and agent runtime)
+- **Commit:** `5d49c6c`
 - **Scope:** Complete overhaul of onboarding & setup flow with real-time hardware preflight checklist, 16 KiB page size detection, Bengali language support, actionable provider key validation cards, and Phosphor icons.
 
 ---
@@ -45,6 +48,10 @@ The objective of Milestone 3 was to deliver a welcoming, beginner-friendly setup
 ---
 
 ## 3. Verification & Safety
+- **CI Build Verification:** GitHub Actions CI run `44905494895` passed in 2m 54s.
+  - Successfully compiled all PRoot C/C++ native assets.
+  - Successfully compiled all Kotlin sources and Compose UI modules.
+  - Built and uploaded `pocketforge-baseline-apk`.
 - **Brace & Parentheses Balance:** 100% balanced across all modified Kotlin files.
 - **XML Syntax:** 100% valid XML across all `values*/*.xml` resource directories.
 - **Safety / Rollback:** Non-breaking UI and presentation layer changes.
