@@ -41,6 +41,7 @@ captures/
 # Keystore files (signing keys)
 *.jks
 *.keystore
+!app/debug.keystore
 
 # External native build folder
 .externalNativeBuild
@@ -66,6 +67,7 @@ dist/runtime-bundles/sources/
 dist/update-test/
 
 # Workspace scratch & source copies
+scratch/
 source/
 rea-tutorial/
 *.zip

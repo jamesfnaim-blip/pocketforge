@@ -501,6 +501,9 @@
     <symbol id="ph-fingerprint" viewBox="0 0 256 256">
       <path d="M128,40a80,80,0,0,0-80,80,8,8,0,0,0,16,0,64,64,0,0,1,128,0,8,8,0,0,0,16,0A80,80,0,0,0,128,40ZM96,128a32,32,0,0,1,64,0v88a8,8,0,0,0,16,0V128a48,48,0,0,0-96,0v88a8,8,0,0,0,16,0Z"/>
     </symbol>
+    <symbol id="ph-bug" viewBox="0 0 256 256">
+      <path d="M224,112H199.19a79.82,79.82,0,0,0-15.19-28.77l16.33-16.34a8,8,0,0,0-11.32-11.32L171.6,72.9A79.89,79.89,0,0,0,136,64.21V40h16a8,8,0,0,0,0-16H104a8,8,0,0,0,0,16h16V64.21A79.89,79.89,0,0,0,84.4,72.9L67,55.57A8,8,0,0,0,55.67,66.89L72,83.23A79.82,79.82,0,0,0,56.81,112H32a8,8,0,0,0,0,16H56V144H32a8,8,0,0,0,0,16H56.81A80.08,80.08,0,0,0,120,223.79V144a8,8,0,0,1,16,0v79.79A80.08,80.08,0,0,0,199.19,160H224a8,8,0,0,0,0-16H200V128h24a8,8,0,0,0,0-16Zm-40,32H72V128H184Zm0-32H72a64.13,64.13,0,0,1,112,0Z"/>
+    </symbol>
   </svg>
 
   <!-- SIDEBAR NAVIGATION TREE -->
@@ -550,6 +553,8 @@
       <div class="tree-item" onclick="openScreen('settings')"><svg class="icon"><use href="#ph-gear-six"></use></svg><span data-t="tree_sett">Settings & Appearance</span></div>
       <div class="tree-item" onclick="openScreen('battery')"><svg class="icon"><use href="#ph-warning-circle"></use></svg><span data-t="tree_batt">Battery Setup Wizard</span></div>
       <div class="tree-item" onclick="openScreen('developer')"><svg class="icon"><use href="#ph-shield-check"></use></svg><span data-t="tree_dev">Developer & Credits</span></div>
+      <div class="tree-item" onclick="openScreen('bug-report')"><svg class="icon"><use href="#ph-bug"></use></svg><span data-t="tree_bug">Bug Report & Diagnostics</span></div>
+
     </div>
   </div>
 
@@ -1158,6 +1163,73 @@
           </div>
         </div>
 
+
+        <!-- SCREEN: BUG REPORT & DIAGNOSTICS -->
+        <div id="screen-bug-report" class="screen-content">
+          <div style="margin-bottom: 12px;">
+            <div style="font-size: 16px; font-weight: 700;" data-t="bug_title">Report an Issue / বাগ রিপোর্ট</div>
+            <div style="font-size: 12px; color: var(--app-text-sec);" data-t="bug_desc">Help us make PocketForge AI better. API keys and passwords are automatically scrubbed.</div>
+          </div>
+
+          <!-- Environment Diagnostic Pill Card -->
+          <div class="card" style="border-left: 3px solid var(--accent);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12px; font-weight: 700; color: var(--accent);">Device Environment Info</span>
+              <span class="badge badge-accent" style="font-size: 10px;">Auto-detected</span>
+            </div>
+            <div style="font-size: 11px; color: var(--app-text-sec); line-height: 1.6; font-family: monospace;">
+              • PocketForge: v1.0.0-alpha (Build 44972948142)<br>
+              • OS: Android 14 (API 34) | ABI: arm64-v8a<br>
+              • Memory: 8.0 GB RAM (3.2 GB Free)<br>
+              • Mode: Simple | Active Agent: Claude Code (Bridged)<br>
+              • PRoot Ubuntu 20.04 LTS: Running (PID 1420)
+            </div>
+          </div>
+
+          <!-- Secret Scrubbing Notice -->
+          <div class="card" style="background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.25);">
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <svg class="icon" style="color: var(--success);"><use href="#ph-shield-check"></use></svg>
+              <div style="font-size: 11.5px; color: var(--success); font-weight: 600;" data-t="bug_scrubbed_note">
+                Privacy Guaranteed: Anthropic/OpenAI/Gemini API keys, passwords, and user tokens are redacted with [REDACTED].
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Box -->
+          <div class="card">
+            <div style="font-size: 12.5px; font-weight: 700; margin-bottom: 6px;" data-t="bug_desc_label">What happened? / কী সমস্যা হয়েছে?</div>
+            <textarea style="width: 100%; min-height: 80px; background: var(--app-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--app-text); padding: 8px; font-size: 12px; resize: none;" placeholder="Describe what you were trying to do and what went wrong..."></textarea>
+          </div>
+
+          <!-- Redacted Logcat Accordion Preview -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12px; font-weight: 700;">Sanitized Diagnostic Logs</span>
+              <span style="font-size: 10.5px; color: var(--accent); cursor: pointer;">Hide Preview</span>
+            </div>
+            <div style="background: var(--terminal-bg); padding: 8px; border-radius: 6px; font-family: monospace; font-size: 10px; color: #94A3B8; max-height: 90px; overflow-y: auto; line-height: 1.4;">
+              [INFO] PocketForgeApp: Initialized ForgeDesign theme (Obsidian)<br>
+              [INFO] RuntimeManager: Ubuntu sub-process started with pid=1420<br>
+              [AUTH] ClaudeBridge: Provider configured with key=sk-ant-api03-[REDACTED]<br>
+              [DEBUG] PTY: Terminal socket connected on fd=42<br>
+              [WARN] ToolApproval: Pending permission for git clone
+            </div>
+          </div>
+
+          <!-- Submission CTAs -->
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+            <a href="https://github.com/jamesfnaim-blip/pocketforge/issues/new?template=bug_report.md" target="_blank" style="text-decoration: none;">
+              <button class="btn-primary" style="width: 100%;">
+                <svg class="icon icon-sm"><use href="#ph-bug"></use></svg> <span data-t="btn_github_issue">Open GitHub Issue (Recommended)</span>
+              </button>
+            </a>
+            <button class="btn-secondary" style="width: 100%;">
+              <svg class="icon icon-sm"><use href="#ph-arrow-square-out"></use></svg> <span data-t="btn_export_diag">Export Redacted Diagnostics Zip</span>
+            </button>
+          </div>
+        </div>
+
         <!-- BOTTOM NAV BAR -->
         <div class="phone-nav-bar" id="bottomNav">
           <div class="nav-btn active" id="nav-home" onclick="openScreen('home')">
@@ -1207,6 +1279,14 @@
         tree_sett: "Settings & Appearance",
         tree_batt: "Battery Setup Wizard",
         tree_dev: "Developer & Credits",
+        tree_bug: "Bug Report & Diagnostics",
+        bug_title: "Report an Issue",
+        bug_desc: "Help us make PocketForge AI better. API keys and passwords are automatically scrubbed.",
+        bug_scrubbed_note: "Privacy Guaranteed: API keys and passwords are automatically redacted with [REDACTED].",
+        bug_desc_label: "What happened? (Steps to reproduce)",
+        btn_github_issue: "Open GitHub Issue (Recommended)",
+        btn_export_diag: "Export Redacted Diagnostics Zip",
+
         setup_lang_title: "Select Application Language",
         setup_lang_desc: "You can change this anytime in Settings.",
         btn_continue: "Continue",
@@ -1256,6 +1336,14 @@
         tree_sett: "সেটিংস ও থিম",
         tree_batt: "ব্যাটারি সেটআপ উইজার্ড",
         tree_dev: "ডেভেলপার ও ক্রেডিট",
+        tree_bug: "বাগ রিপোর্ট ও ডায়াগনস্টিক",
+        bug_title: "সমস্যা রিপোর্ট করুন (বাগ রিপোর্ট)",
+        bug_desc: "পকেটফোর্জ আরও নিখুঁত করতে আমাদের জানান। আপনার API কি ও পাসওয়ার্ড স্বয়ংক্রিয়ভাবে মুছে ফেলা হয়।",
+        bug_scrubbed_note: "প্রাইভেসি সুরক্ষিত: Anthropic/OpenAI কি এবং পাসওয়ার্ড [REDACTED] দিয়ে মুছে ফেলা হয়েছে।",
+        bug_desc_label: "কী সমস্যা হয়েছিল? (কীভাবে এটি ঘটেছে)",
+        btn_github_issue: "গিটহাব ইস্যু তৈরি করুন (প্রস্তাবিত)",
+        btn_export_diag: "সুরক্ষিত ডায়াগনস্টিক জিপ সেভ করুন",
+
         setup_lang_title: "অ্যাপ্লিকেশনের ভাষা বেছে নিন",
         setup_lang_desc: "সেটিংস থেকে যেকোনো সময় এটি পরিবর্তন করতে পারবেন।",
         btn_continue: "এগিয়ে যান",
@@ -1360,6 +1448,38 @@
         item.style.display = text.includes(q) ? 'flex' : 'none';
       });
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const screen = params.get('screen');
+      const theme = params.get('theme');
+      const lang = params.get('lang');
+      const mode = params.get('mode');
+      const frameOnly = params.get('frameOnly');
+
+      if (screen) openScreen(screen);
+      if (theme) setTheme(theme);
+      if (mode) setMode(mode);
+      if (lang && lang !== currentLang) toggleLang();
+      if (frameOnly === 'true') {
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) sidebar.style.display = 'none';
+        const toolbar = document.querySelector('.stage-toolbar');
+        if (toolbar) toolbar.style.display = 'none';
+        const stage = document.querySelector('.main-stage');
+        if (stage) stage.style.padding = '0';
+        const viewport = document.querySelector('.phone-stage-viewport');
+        if (viewport) {
+          viewport.style.padding = '0';
+          viewport.style.alignItems = 'flex-start';
+        }
+        const phone = document.getElementById('phoneWrapper');
+        if (phone) {
+          phone.style.margin = '0 auto';
+          phone.style.boxShadow = 'none';
+        }
+      }
+    });
   </script>
 </body>
 </html>

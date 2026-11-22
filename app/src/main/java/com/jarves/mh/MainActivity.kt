@@ -22,8 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jarves.mh.ui.AppStrings
 import com.jarves.mh.ui.LocaleHelper
 import com.jarves.mh.ui.MainViewModel
-import com.jarves.mh.ui.PocketDevApp
-import com.jarves.mh.ui.theme.PocketTheme
+import com.jarves.mh.ui.v2.ForgeApp
 
 class MainActivity : ComponentActivity() {
     private var appliedLanguageCode: String? = null
@@ -58,9 +57,7 @@ class MainActivity : ComponentActivity() {
                 LocalLayoutDirection provides layoutDirection,
                 LocalActivityResultRegistryOwner provides this,
             ) {
-                PocketTheme(themeMode = state.themeMode) {
-                    PocketDevApp(vm)
-                }
+                ForgeApp(vm)
             }
         }
     }

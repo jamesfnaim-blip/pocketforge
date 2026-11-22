@@ -49,9 +49,19 @@ jobs:
       - name: Build Online Debug APK
         run: ./gradlew assembleOnlineDebug --stacktrace
 
+      - name: Generate UI Review Gallery
+        run: python3 scripts/generate_ui_gallery.py
+
+      - name: Upload UI Review Gallery
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-gallery
+          path: docs/ui-review/
+          if-no-files-found: warn
+
       - name: Upload Baseline APK
         uses: actions/upload-artifact@v4
         with:
-          name: pocketforge-baseline-apk
+          name: pocketforge-debug-apk
           path: app/build/outputs/apk/online/debug/*.apk
           if-no-files-found: error
