@@ -60,6 +60,7 @@
     <string name="ws_update">Update</string>
     <string name="ws_create_starter_project">Create a starter project</string>
     <string name="ws_project_name">Project name</string>
+    <string name="ws_project_name_hint">e.g. my-awesome-app</string>
     <string name="ws_terminal_folder">Terminal folder: %1$s</string>
     <string name="ws_create">Create</string>
     <string name="ws_clone_git_title">Clone Git repository</string>
