@@ -7,7 +7,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
-import com.jarves.mh.ui.theme.ThemeMode
+import com.jarves.mh.ui.theme.AppThemeMode
 
 object ForgeTheme {
     val colors: ForgeColors
@@ -28,17 +28,17 @@ object ForgeTheme {
 
 @Composable
 fun ForgeTheme(
-    themeMode: ThemeMode = ThemeMode.SYSTEM,
+    themeMode: AppThemeMode = AppThemeMode.SYSTEM,
     shapes: ForgeShapes = ForgeShapes(),
     typography: ForgeTypography = ForgeTypography(),
     content: @Composable () -> Unit,
 ) {
     val isSystemDark = isSystemInDarkTheme()
     val forgeColors = when (themeMode) {
-        ThemeMode.SYSTEM -> if (isSystemDark) ObsidianColors else LightColors
-        ThemeMode.DARK -> ObsidianColors
-        ThemeMode.AMOLED -> AmoledColors
-        ThemeMode.LIGHT -> LightColors
+        AppThemeMode.SYSTEM -> if (isSystemDark) ObsidianColors else LightColors
+        AppThemeMode.DARK -> ObsidianColors
+        AppThemeMode.AMOLED -> AmoledColors
+        AppThemeMode.LIGHT -> LightColors
     }
 
     val materialColors = if (forgeColors.isDark) {

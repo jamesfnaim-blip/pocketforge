@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jarves.mh.ui.MainViewModel
 import com.jarves.mh.ui.PocketDevApp
-import com.jarves.mh.ui.theme.ThemeMode
+import com.jarves.mh.ui.theme.AppThemeMode
 import com.jarves.mh.ui.v2.components.ForgeAppMode
 import com.jarves.mh.ui.v2.navigation.ForgeAppShell
 import com.jarves.mh.ui.v2.navigation.ForgeNavHost
@@ -31,7 +31,7 @@ fun ForgeApp(
         )
     }
     var appMode by remember { mutableStateOf(ForgeAppMode.SIMPLE) }
-    var currentThemeMode by remember { mutableStateOf(ThemeMode.DARK) }
+    var currentThemeMode by remember { mutableStateOf(AppThemeMode.DARK) }
 
     if (showLegacyUi) {
         // Fallback to legacy UI during migration so user never loses access to any sub-feature
@@ -43,8 +43,8 @@ fun ForgeApp(
             themeMode = currentThemeMode,
             languageCode = uiState.languageCode,
             isUbuntuRunning = uiState.onboardingComplete,
-            activeProjectId = uiState.workspace?.project?.name,
-            activeProjectName = uiState.workspace?.project?.name ?: "PocketForge AI",
+            activeProjectId = uiState.activeProject?.id,
+            activeProjectName = uiState.activeProject?.name ?: "PocketForge AI",
             isSetupCompleted = uiState.onboardingComplete,
             showLegacyUi = showLegacyUi,
         )
@@ -56,10 +56,10 @@ fun ForgeApp(
                 onModeChange = { newMode -> appMode = newMode },
                 onThemeToggle = {
                     currentThemeMode = when (currentThemeMode) {
-                        ThemeMode.DARK -> ThemeMode.AMOLED
-                        ThemeMode.AMOLED -> ThemeMode.LIGHT
-                        ThemeMode.LIGHT -> ThemeMode.DARK
-                        ThemeMode.SYSTEM -> ThemeMode.DARK
+                        AppThemeMode.DARK -> AppThemeMode.AMOLED
+                        AppThemeMode.AMOLED -> AppThemeMode.LIGHT
+                        AppThemeMode.LIGHT -> AppThemeMode.DARK
+                        AppThemeMode.SYSTEM -> AppThemeMode.DARK
                     }
                 },
                 onLanguageToggle = {
