@@ -8,9 +8,12 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
+import com.jarves.mh.ui.DeveloperDiagnostics
 import com.jarves.mh.ui.theme.AppThemeMode
+import com.jarves.mh.ui.v2.bugreport.BugReportScreen
 import com.jarves.mh.ui.v2.chat.ChatScreen
 import com.jarves.mh.ui.v2.components.ForgeAppMode
+import com.jarves.mh.ui.v2.developer.DeveloperCreditsScreen
 import com.jarves.mh.ui.v2.home.HomeScreen
 import com.jarves.mh.ui.v2.setup.SetupWizardScreen
 import com.jarves.mh.ui.v2.theme.ForgeTheme
@@ -193,5 +196,46 @@ class ForgeRealScreenshotTest {
             }
         }
         composeTestRule.onRoot().captureRoboImage("docs/ui-review/real_chat_pro_amoled_en.png")
+    }
+
+    // -------------------------------------------------------------------------
+    // DEVELOPER CREDITS & BUG REPORT REAL RENDERS
+    // -------------------------------------------------------------------------
+
+    @Test
+    fun renderDeveloperCreditsObsidianEn() {
+        composeTestRule.setContent {
+            ForgeTheme(themeMode = AppThemeMode.DARK) {
+                Box(modifier = Modifier.fillMaxSize().background(ForgeTheme.colors.background)) {
+                    DeveloperCreditsScreen(onBack = {})
+                }
+            }
+        }
+        composeTestRule.onRoot().captureRoboImage("docs/ui-review/real_developer_credits_obsidian_en.png")
+    }
+
+    @Test
+    fun renderBugReportObsidianEn() {
+        composeTestRule.setContent {
+            ForgeTheme(themeMode = AppThemeMode.DARK) {
+                Box(modifier = Modifier.fillMaxSize().background(ForgeTheme.colors.background)) {
+                    BugReportScreen(
+                        diagnostics = DeveloperDiagnostics(
+                            appPssBytes = 120 * 1024 * 1024L,
+                            javaHeapBytes = 45 * 1024 * 1024L,
+                            javaHeapMaxBytes = 256 * 1024 * 1024L,
+                            activeProcesses = listOf("node server.js (PID 1024)", "proot (PID 980)"),
+                            messageCount = 12,
+                            logcatLines = 150,
+                            terminalBufferBytes = 32 * 1024L,
+                            buildLogBytes = 12 * 1024L,
+                        ),
+                        onRefresh = {},
+                        onBack = {},
+                    )
+                }
+            }
+        }
+        composeTestRule.onRoot().captureRoboImage("docs/ui-review/real_bug_report_obsidian_en.png")
     }
 }

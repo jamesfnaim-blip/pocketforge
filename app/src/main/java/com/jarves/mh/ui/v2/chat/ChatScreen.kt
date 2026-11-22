@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -23,8 +22,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -33,6 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.jarves.mh.model.ChangeItem
+import com.jarves.mh.model.ChatMessage
+import com.jarves.mh.model.ToolRequest
 import com.jarves.mh.ui.components.PhosphorIcon
 import com.jarves.mh.ui.components.PhosphorIconType
 import com.jarves.mh.ui.v2.components.ForgeAppMode
@@ -45,23 +47,24 @@ import com.jarves.mh.ui.v2.components.ForgeInput
 import com.jarves.mh.ui.v2.components.ForgeKeyBar
 import com.jarves.mh.ui.v2.components.ForgeToolApprovalCard
 import com.jarves.mh.ui.v2.theme.ForgeTheme
-
-data class ChatMessageItem(
-    val id: String,
-    val isUser: Boolean,
-    val text: String,
-    val timestamp: String,
-    val reasoning: String? = null,
-    val activityLogs: List<String> = emptyList(),
-    val pendingTool: String? = null,
-    val checkpointFiles: Int = 0,
-)
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 @Composable
 fun ChatScreen(
     projectName: String = "PocketForge AI",
     activeModel: String = "Claude 3.5 Sonnet",
     appMode: ForgeAppMode = ForgeAppMode.SIMPLE,
+    messages: List<ChatMessage> = emptyList(),
+    isRunning: Boolean = false,
+    liveThinking: Boolean = false,
+    pendingApproval: ToolRequest? = null,
+    changes: List<ChangeItem> = emptyList(),
+    onSendMessage: (String) -> Unit = {},
+    onStopTask: () -> Unit = {},
+    onApproveTool: (Boolean) -> Unit = {},
+    onUndoChanges: () -> Unit = {},
+    onKeepChanges: () -> Unit = {},
     onBack: (() -> Unit)? = null,
     onOpenTerminal: (() -> Unit)? = null,
     onOpenPreview: (() -> Unit)? = null,
@@ -72,29 +75,14 @@ fun ChatScreen(
     val shapes = ForgeTheme.shapes
 
     var inputText by remember { mutableStateOf("") }
-    var isStreaming by remember { mutableStateOf(false) }
-
-    val messages = remember {
-        mutableStateListOf(
-            ChatMessageItem(
-                id = "1",
-                isUser = true,
-                text = "Rebuild the UI layer from the approved mockup. Use ForgeDesign, clean components, and zero emoji.",
-                timestamp = "10:15 AM",
-            ),
-            ChatMessageItem(
-                id = "2",
-                isUser = false,
-                text = "I have initiated the complete UI redesign under `ui/v2`! The Obsidian and AMOLED dark themes are applied, components are organized in modular files under 400 lines each, and Phosphor icons are used exclusively.",
-                timestamp = "10:16 AM",
-                reasoning = "Reviewed docs/mockups/index.html and docs/design-system.md. Confirmed 18 screens and token mapping. Starting UI-0 foundation, UI-1 setup, and UI-2 agent chat.",
-                activityLogs = listOf("Checked docs/design-system.md", "Created ForgeColors.kt, ForgeShapes.kt", "Created SetupWizardScreen.kt, HomeScreen.kt"),
-                checkpointFiles = 6,
-            ),
-        )
-    }
-
     val listState = rememberLazyListState()
+
+    // Auto-scroll to bottom when a new message arrives or streaming updates
+    LaunchedEffect(messages.size, isRunning) {
+        if (messages.isNotEmpty()) {
+            listState.animateScrollToItem(messages.size - 1)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -169,16 +157,46 @@ fun ChatScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             items(messages, key = { it.id }) { msg ->
-                if (msg.isUser) {
-                    UserMessageBubble(msg)
+                if (msg.fromUser) {
+                    RealUserMessageBubble(msg)
                 } else {
-                    AgentMessageBubble(msg)
+                    RealAgentMessageBubble(msg)
                 }
             }
 
-            if (isStreaming) {
+            // Real Interactive Tool Approval Card
+            if (pendingApproval != null) {
                 item {
-                    AgentStreamingIndicator()
+                    ForgeToolApprovalCard(
+                        toolName = pendingApproval.toolName,
+                        commandOrDetails = pendingApproval.commandPreview ?: pendingApproval.explanation,
+                        onApproveOnce = { onApproveTool(true) },
+                        onApproveAlways = { onApproveTool(true) },
+                        onReject = { onApproveTool(false) },
+                    )
+                }
+            }
+
+            // Real Checkpoint Card
+            if (changes.isNotEmpty()) {
+                item {
+                    val summaryText = changes.joinToString("\n") {
+                        "${it.path} (+${it.additions}/-${it.deletions})"
+                    }
+                    ForgeCheckpointCard(
+                        changedFileCount = changes.size,
+                        summary = summaryText,
+                        onAccept = onKeepChanges,
+                        onRevert = onUndoChanges,
+                        onReviewDiff = {},
+                    )
+                }
+            }
+
+            // Real Streaming & Thinking Indicator
+            if (isRunning || liveThinking) {
+                item {
+                    AgentStreamingIndicator(isThinking = liveThinking)
                 }
             }
         }
@@ -219,39 +237,59 @@ fun ChatScreen(
                 maxLines = 4,
             )
 
-            Box(
-                modifier = Modifier
-                    .size(40.dp)
-                    .clip(shapes.pill)
-                    .background(if (inputText.isNotBlank()) colors.primary else colors.surfaceElevated)
-                    .clickable(enabled = inputText.isNotBlank()) {
-                        messages.add(
-                            ChatMessageItem(
-                                id = System.currentTimeMillis().toString(),
-                                isUser = true,
-                                text = inputText,
-                                timestamp = "Now",
-                            )
-                        )
-                        inputText = ""
-                    },
-                contentAlignment = Alignment.Center,
-            ) {
-                PhosphorIcon(
-                    icon = PhosphorIconType.PAPER_PLANE_RIGHT,
-                    size = 18.dp,
-                    tint = if (inputText.isNotBlank()) Color.White else colors.textMuted,
-                )
+            if (isRunning) {
+                // STOP BUTTON when agent is actively running
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(shapes.pill)
+                        .background(colors.error)
+                        .clickable(onClick = onStopTask),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    PhosphorIcon(
+                        icon = PhosphorIconType.X_CIRCLE,
+                        size = 20.dp,
+                        tint = Color.White,
+                    )
+                }
+            } else {
+                // SEND BUTTON
+                Box(
+                    modifier = Modifier
+                        .size(40.dp)
+                        .clip(shapes.pill)
+                        .background(if (inputText.isNotBlank()) colors.primary else colors.surfaceElevated)
+                        .clickable(enabled = inputText.isNotBlank()) {
+                            onSendMessage(inputText)
+                            inputText = ""
+                        },
+                    contentAlignment = Alignment.Center,
+                ) {
+                    PhosphorIcon(
+                        icon = PhosphorIconType.PAPER_PLANE_RIGHT,
+                        size = 18.dp,
+                        tint = if (inputText.isNotBlank()) Color.White else colors.textMuted,
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun UserMessageBubble(msg: ChatMessageItem) {
+private fun RealUserMessageBubble(msg: ChatMessage) {
     val colors = ForgeTheme.colors
     val typography = ForgeTheme.typography
     val shapes = ForgeTheme.shapes
+
+    val timeStr = try {
+        DateTimeFormatter.ofPattern("HH:mm")
+            .withZone(ZoneId.systemDefault())
+            .format(msg.createdAt)
+    } catch (_: Exception) {
+        ""
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -269,25 +307,35 @@ private fun UserMessageBubble(msg: ChatMessageItem) {
                 style = typography.bodyMedium,
                 color = Color.White,
             )
-            Text(
-                text = msg.timestamp,
-                style = typography.labelSmall,
-                color = Color.White.copy(alpha = 0.7f),
-                modifier = Modifier
-                    .align(Alignment.End)
-                    .padding(top = 4.dp),
-            )
+            if (timeStr.isNotBlank()) {
+                Text(
+                    text = timeStr,
+                    style = typography.labelSmall,
+                    color = Color.White.copy(alpha = 0.7f),
+                    modifier = Modifier
+                        .align(Alignment.End)
+                        .padding(top = 4.dp),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun AgentMessageBubble(msg: ChatMessageItem) {
+private fun RealAgentMessageBubble(msg: ChatMessage) {
     val colors = ForgeTheme.colors
     val typography = ForgeTheme.typography
     val shapes = ForgeTheme.shapes
 
     var reasoningExpanded by remember { mutableStateOf(false) }
+
+    val timeStr = try {
+        DateTimeFormatter.ofPattern("HH:mm")
+            .withZone(ZoneId.systemDefault())
+            .format(msg.createdAt)
+    } catch (_: Exception) {
+        ""
+    }
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -302,8 +350,8 @@ private fun AgentMessageBubble(msg: ChatMessageItem) {
                 .padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            // Collapsible reasoning
-            if (msg.reasoning != null) {
+            // Real Agent Work Items / Collapsible Reasoning
+            if (msg.workItems.isNotEmpty()) {
                 Surface(
                     onClick = { reasoningExpanded = !reasoningExpanded },
                     shape = shapes.chip,
@@ -316,7 +364,7 @@ private fun AgentMessageBubble(msg: ChatMessageItem) {
                     ) {
                         PhosphorIcon(icon = PhosphorIconType.SPARKLE, size = 12.dp, tint = colors.accent)
                         Text(
-                            text = if (reasoningExpanded) "Hide Reasoning" else "Thought Process",
+                            text = if (reasoningExpanded) "Hide Details" else "${msg.workItems.size} activities executed",
                             style = typography.codeSmall,
                             color = colors.accent,
                         )
@@ -329,15 +377,21 @@ private fun AgentMessageBubble(msg: ChatMessageItem) {
                 }
 
                 if (reasoningExpanded) {
-                    Text(
-                        text = msg.reasoning,
-                        style = typography.codeSmall,
-                        color = colors.textSecondary,
+                    Column(
                         modifier = Modifier
                             .fillMaxWidth()
                             .background(colors.background, shapes.cardSmall)
                             .padding(8.dp),
-                    )
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                    ) {
+                        msg.workItems.forEach { item ->
+                            Text(
+                                text = "• ${item.title}: ${item.detail}",
+                                style = typography.codeSmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                    }
                 }
             }
 
@@ -348,48 +402,28 @@ private fun AgentMessageBubble(msg: ChatMessageItem) {
                 color = colors.textPrimary,
             )
 
-            // Pending Tool Approval Card (if any)
-            if (msg.pendingTool != null) {
-                ForgeToolApprovalCard(
-                    toolName = msg.pendingTool,
-                    commandOrDetails = "git clone https://github.com/example/repo.git",
-                    onApproveOnce = {},
-                    onApproveAlways = {},
-                    onReject = {},
-                )
-            }
-
-            // Checkpoint Card (if files were modified)
-            if (msg.checkpointFiles > 0) {
-                ForgeCheckpointCard(
-                    changedFileCount = msg.checkpointFiles,
-                    summary = "Added ForgeColors.kt, ForgeShapes.kt, ForgeTheme.kt, and SetupWizardScreen.kt",
-                    onAccept = {},
-                    onRevert = {},
-                    onReviewDiff = {},
-                )
-            }
-
             // Timestamp
-            Text(
-                text = msg.timestamp,
-                style = typography.labelSmall,
-                color = colors.textMuted,
-                modifier = Modifier.align(Alignment.End),
-            )
+            if (timeStr.isNotBlank()) {
+                Text(
+                    text = timeStr,
+                    style = typography.labelSmall,
+                    color = colors.textMuted,
+                    modifier = Modifier.align(Alignment.End),
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun AgentStreamingIndicator() {
+private fun AgentStreamingIndicator(isThinking: Boolean = false) {
     val colors = ForgeTheme.colors
     val typography = ForgeTheme.typography
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.padding(start = 8.dp),
+        modifier = Modifier.padding(start = 8.dp, top = 4.dp),
     ) {
         CircularProgressIndicator(
             modifier = Modifier.size(14.dp),
@@ -397,7 +431,7 @@ private fun AgentStreamingIndicator() {
             color = colors.accent,
         )
         Text(
-            text = "Agent is working...",
+            text = if (isThinking) "Agent is reasoning..." else "Agent is responding...",
             style = typography.labelSmall,
             color = colors.accent,
         )

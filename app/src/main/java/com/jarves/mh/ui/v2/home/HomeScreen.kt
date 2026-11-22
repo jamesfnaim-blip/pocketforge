@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.jarves.mh.R
+import com.jarves.mh.model.Project
 import com.jarves.mh.ui.components.PhosphorIcon
 import com.jarves.mh.ui.components.PhosphorIconType
 import com.jarves.mh.ui.v2.components.ForgeCard
@@ -33,14 +34,18 @@ import com.jarves.mh.ui.v2.components.ForgeChip
 import com.jarves.mh.ui.v2.components.ForgeChipTone
 import com.jarves.mh.ui.v2.components.ForgeSubsystemStatusCard
 import com.jarves.mh.ui.v2.theme.ForgeTheme
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
     userName: String = "Nayem",
     isUbuntuRunning: Boolean = true,
-    serverUrl: String? = "http://localhost:3000",
+    serverUrl: String? = null,
+    projects: List<Project> = emptyList(),
     onStartNewTask: () -> Unit,
-    onOpenProject: (String) -> Unit,
+    onOpenProject: (Project) -> Unit,
     onNewProject: () -> Unit,
     onCloneRepo: () -> Unit,
     onTemplates: () -> Unit,
@@ -208,7 +213,7 @@ fun HomeScreen(
             )
         }
 
-        // RECENT PROJECTS SECTION
+        // REAL PROJECTS SECTION
         Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -221,48 +226,62 @@ fun HomeScreen(
                     color = colors.textPrimary,
                 )
                 Text(
-                    text = "View all",
+                    text = "${projects.size} active",
                     style = typography.labelSmall,
-                    color = colors.accent,
-                    modifier = Modifier.clickable { onOpenProject("all") },
+                    color = colors.textMuted,
                 )
             }
 
-            ProjectItemCard(
-                name = "PocketForge AI",
-                stack = "Android Jetpack Compose",
-                lastActive = "2m ago",
-                branch = "main",
-                onClick = { onOpenProject("PocketForge AI") },
-            )
-            ProjectItemCard(
-                name = "My Portfolio Web",
-                stack = "React / Vite / Tailwind",
-                lastActive = "1h ago",
-                branch = "feat/v2",
-                onClick = { onOpenProject("My Portfolio Web") },
-            )
-            ProjectItemCard(
-                name = "FastAPI Backend",
-                stack = "Python 3.11 / SQLite",
-                lastActive = "Yesterday",
-                branch = "main",
-                onClick = { onOpenProject("FastAPI Backend") },
-            )
+            if (projects.isEmpty()) {
+                ForgeCard(
+                    style = ForgeCardStyle.DEFAULT,
+                    contentPadding = 16.dp,
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        PhosphorIcon(
+                            icon = PhosphorIconType.FOLDER_SIMPLE,
+                            size = 28.dp,
+                            tint = colors.textMuted,
+                        )
+                        Text(
+                            text = "No projects created yet",
+                            style = typography.titleSmall,
+                            color = colors.textPrimary,
+                        )
+                        Text(
+                            text = "Start a task above or tap 'New Project' to create your first workspace.",
+                            style = typography.bodySmall,
+                            color = colors.textSecondary,
+                        )
+                    }
+                }
+            } else {
+                projects.forEach { project ->
+                    RealProjectItemCard(
+                        project = project,
+                        onClick = { onOpenProject(project) },
+                    )
+                }
+            }
         }
     }
 }
 
 @Composable
-private fun ProjectItemCard(
-    name: String,
-    stack: String,
-    lastActive: String,
-    branch: String,
+private fun RealProjectItemCard(
+    project: Project,
     onClick: () -> Unit,
 ) {
     val colors = ForgeTheme.colors
     val typography = ForgeTheme.typography
+
+    val formattedDate = SimpleDateFormat("MMM d, HH:mm", Locale.getDefault()).format(
+        Date(project.updatedAtMillis)
+    )
 
     ForgeCard(
         style = ForgeCardStyle.DEFAULT,
@@ -285,12 +304,12 @@ private fun ProjectItemCard(
                 )
                 Column {
                     Text(
-                        text = name,
+                        text = project.name,
                         style = typography.titleSmall,
                         color = colors.textPrimary,
                     )
                     Text(
-                        text = stack,
+                        text = project.description.ifBlank { project.language.ifBlank { "General Project" } },
                         style = typography.bodySmall,
                         color = colors.textSecondary,
                     )
@@ -298,7 +317,7 @@ private fun ProjectItemCard(
             }
             Column(horizontalAlignment = Alignment.End) {
                 Text(
-                    text = lastActive,
+                    text = formattedDate,
                     style = typography.labelSmall,
                     color = colors.textMuted,
                 )
@@ -307,7 +326,7 @@ private fun ProjectItemCard(
                     horizontalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     PhosphorIcon(icon = PhosphorIconType.GIT_BRANCH, size = 12.dp, tint = colors.textMuted)
-                    Text(text = branch, style = typography.codeSmall, color = colors.textMuted)
+                    Text(text = "main", style = typography.codeSmall, color = colors.textMuted)
                 }
             }
         }

@@ -73,6 +73,8 @@ fun ForgeApp(
                 modifier = modifier,
             ) {
                 ForgeNavHost(
+                    viewModel = viewModel,
+                    uiState = uiState,
                     state = appState,
                     onNavigate = { newRoute -> currentRoute = newRoute },
                     onLanguageSelected = { lang -> viewModel.setLanguage(lang) },

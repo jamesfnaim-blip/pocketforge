@@ -63,3 +63,22 @@ To generate real Compose screenshot renders without requiring a physical device 
 | **Tool Approval Card** | Static card mockup | Interactive `ForgeToolApprovalCard` (`Allow Once`, `Always Allow`, `Deny`) | Bound to bidirectional permissions bridge in `RuntimeInstaller.kt`. |
 | **Checkpoint Card** | Static diff mockup | Interactive `ForgeCheckpointCard` (`Review Diff`, `Accept Changes`, `Revert`) | Direct hooks for undo/accept git checkpoints. |
 | **Pro Mode KeyBar** | Emulated HTML horizontal flex row | Compose `ForgeKeyBar` with `horizontalScroll(rememberScrollState())` | Real mobile soft-keyboard shortcut bar. |
+
+---
+
+### D. Developer & Credits (`DeveloperCreditsScreen.kt`)
+
+| Visual Aspect | HTML Design Mockup (`#screen-dev`) | Real Jetpack Compose Render (`DeveloperCreditsScreen.kt`) | Technical Difference |
+| :--- | :--- | :--- | :--- |
+| **Profile & Links** | HTML anchor tags | Compose `ForgeButton` launching `Intent.ACTION_VIEW` for `https://nayemhsn.com` and `https://linkedin.com/in/nayemdevbd` | Real Android OS intent dispatch. |
+| **Licenses** | Summary list | Collapsible dialog displaying full licenses for PRoot (GPL-2.0), Mobile Harness (MIT), Phosphor (MIT), and Fonts (OFL 1.1) | Direct in-app legal compliance viewer. |
+
+---
+
+### E. Diagnostics & Bug Report (`BugReportScreen.kt`)
+
+| Visual Aspect | HTML Design Mockup (`#screen-bug`) | Real Jetpack Compose Render (`BugReportScreen.kt`) | Technical Difference |
+| :--- | :--- | :--- | :--- |
+| **Diagnostics** | Simulated text values | Live `DeveloperDiagnostics` (PSS memory, Java heap, active processes, buffer counters) | Directly bound to Android `ActivityManager` and process runtime metrics. |
+| **Redaction & Privacy** | Static disclaimer | Enforced redaction: strictly system counters; no code, prompts, or API keys | Prevents credential leaks during issue submission. |
+| **Export** | Static button | System clipboard copy via `ClipboardManager` | Real Android clipboard integration. |
