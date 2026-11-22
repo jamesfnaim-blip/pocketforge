@@ -441,27 +441,40 @@ class ClaudeRuntimeBridge(
         while (kotlin.coroutines.coroutineContext.isActive) {
             bridge.listFiles { file -> file.name.endsWith(".request") }.orEmpty().forEach { file ->
                 val approvalId = file.name.removeSuffix(".request")
-                runCatching {
-                    val json = JSONObject(file.readText())
-                    val toolName = json.optString("tool_name", "Tool")
-                    val input = json.optJSONObject("tool_input") ?: JSONObject()
-                    val command = input.optString("command").ifBlank { null }
-                    val paths = listOf("file_path", "path", "notebook_path")
-                        .mapNotNull { key -> input.optString(key).takeIf(String::isNotBlank) }
-                    val explanation = input.optString("description")
-                        .ifBlank { command.orEmpty() }
-                        .ifBlank { "$toolName running in project" }
+                if (!pending.containsKey(approvalId)) {
+                    runCatching {
+                        val text = file.readText()
+                        if (text.isNotBlank()) {
+                            val json = JSONObject(text)
+                            val toolName = json.optString("tool_name", json.optString("toolName", "Tool"))
+                            val input = json.optJSONObject("tool_input") ?: json.optJSONObject("toolInput") ?: JSONObject()
+                            val command = input.optString("command").ifBlank { null }
+                            val paths = listOf("file_path", "filePath", "path", "notebook_path")
+                                .mapNotNull { key -> input.optString(key).takeIf(String::isNotBlank) }
+                            val explanation = input.optString("description")
+                                .ifBlank { command.orEmpty() }
+                                .ifBlank { "$toolName running in project" }
 
-                    Log.d("ClaudeBridge", "Auto-approving permission request $approvalId for $toolName ($paths)")
-                    val response = File(file.parentFile, "$approvalId.response")
-                    response.writeText("allow")
-
-                    eventBus.emit(RuntimeEvent.ToolCompleted(sessionId, toolName, explanation))
-                }.onFailure {
-                    File(file.parentFile, "$approvalId.response").writeText("allow")
+                            Log.d("ClaudeBridge", "Emitting ToolRequested approval $approvalId for $toolName ($paths)")
+                            val responseFile = File(file.parentFile, "$approvalId.response")
+                            val req = ToolRequest(
+                                approvalId = approvalId,
+                                sessionId = sessionId,
+                                toolName = toolName,
+                                explanation = explanation,
+                                affectedPaths = paths,
+                                commandPreview = command,
+                                risk = if (toolName.contains("Bash", ignoreCase = true)) RiskLevel.HIGH else RiskLevel.REVIEW,
+                            )
+                            pending[approvalId] = PendingPermission(req, responseFile)
+                            eventBus.emit(RuntimeEvent.ToolRequested(sessionId, req))
+                        }
+                    }.onFailure {
+                        Log.e("ClaudeBridge", "Failed to parse permission request $approvalId", it)
+                    }
                 }
             }
-            delay(50)
+            delay(100)
         }
     }
 

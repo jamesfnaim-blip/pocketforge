@@ -359,26 +359,104 @@ internal fun ProjectsScreen(
     }
     if (showCreate) AlertDialog(
         onDismissRequest = { showCreate = false },
-        title = { Text(stringResource(R.string.an_create_project)) },
+        shape = RoundedCornerShape(20.dp),
+        title = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ph_sparkle),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(22.dp),
+                )
+                Spacer(Modifier.width(8.dp))
+                Text(
+                    stringResource(R.string.an_create_project),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                )
+            }
+        },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedTextField(name, { name = it }, label = { Text(stringResource(R.string.ws_project_name)) }, singleLine = true)
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text(stringResource(R.string.ws_project_name)) },
+                    placeholder = { Text(stringResource(R.string.ws_project_name_hint)) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f),
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                    ),
+                )
                 Text(stringResource(R.string.project_type), fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
-                    AssistChip(
+                    FilterChip(
+                        selected = (androidTemplate == null),
                         onClick = { androidTemplate = null },
-                        label = { Text(stringResource(R.string.project_type_general)) },
-                        leadingIcon = { if (androidTemplate == null) Icon(Icons.Default.Check, null, Modifier.size(16.dp)) },
+                        label = { Text(stringResource(R.string.project_type_general), fontSize = 12.sp) },
+                        leadingIcon = if (androidTemplate == null) {
+                            { Icon(painterResource(R.drawable.ph_check_circle), null, Modifier.size(15.dp)) }
+                        } else null,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = (androidTemplate == null),
+                            borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.35f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary,
+                        ),
                     )
-                    AssistChip(
+                    FilterChip(
+                        selected = (androidTemplate == AndroidTemplate.COMPOSE),
                         onClick = { androidTemplate = AndroidTemplate.COMPOSE },
-                        label = { Text(stringResource(R.string.project_type_compose)) },
-                        leadingIcon = { if (androidTemplate == AndroidTemplate.COMPOSE) Icon(Icons.Default.Check, null, Modifier.size(16.dp)) },
+                        label = { Text(stringResource(R.string.project_type_compose), fontSize = 12.sp) },
+                        leadingIcon = if (androidTemplate == AndroidTemplate.COMPOSE) {
+                            { Icon(painterResource(R.drawable.ph_check_circle), null, Modifier.size(15.dp)) }
+                        } else null,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = (androidTemplate == AndroidTemplate.COMPOSE),
+                            borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.35f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary,
+                        ),
                     )
-                    AssistChip(
+                    FilterChip(
+                        selected = (androidTemplate == AndroidTemplate.XML),
                         onClick = { androidTemplate = AndroidTemplate.XML },
-                        label = { Text(stringResource(R.string.project_type_xml)) },
-                        leadingIcon = { if (androidTemplate == AndroidTemplate.XML) Icon(Icons.Default.Check, null, Modifier.size(16.dp)) },
+                        label = { Text(stringResource(R.string.project_type_xml), fontSize = 12.sp) },
+                        leadingIcon = if (androidTemplate == AndroidTemplate.XML) {
+                            { Icon(painterResource(R.drawable.ph_check_circle), null, Modifier.size(15.dp)) }
+                        } else null,
+                        shape = RoundedCornerShape(10.dp),
+                        colors = FilterChipDefaults.filterChipColors(
+                            selectedContainerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.18f),
+                            selectedLabelColor = MaterialTheme.colorScheme.primary,
+                            selectedLeadingIconColor = MaterialTheme.colorScheme.primary,
+                        ),
+                        border = FilterChipDefaults.filterChipBorder(
+                            enabled = true,
+                            selected = (androidTemplate == AndroidTemplate.XML),
+                            borderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.35f),
+                            selectedBorderColor = MaterialTheme.colorScheme.primary,
+                        ),
                     )
                 }
                 Text(
@@ -389,28 +467,46 @@ internal fun ProjectsScreen(
                             null -> R.string.project_type_general_desc
                         },
                     ),
-                    fontSize = 11.sp,
+                    fontSize = 11.5.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
                 if (androidTemplate != null) {
                     Text(
                         stringResource(R.string.an_template_info, 28, 36),
-                        fontSize = 12.sp,
+                        fontSize = 11.5.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 if (name.isNotBlank()) {
-                    Text(
-                        stringResource(R.string.ws_terminal_folder, "/workspace/${projectSlug(name)}"),
-                        fontFamily = FontFamily.Monospace,
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 7.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                painter = painterResource(R.drawable.ph_folder_simple),
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(15.dp),
+                            )
+                            Spacer(Modifier.width(6.dp))
+                            Text(
+                                "/workspace/${projectSlug(name)}",
+                                fontFamily = FontFamily.Monospace,
+                                fontSize = 11.5.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
                 }
             }
         },
         confirmButton = {
-            TextButton(
+            Button(
                 onClick = {
                     androidTemplate?.let { onCreateAndroid(name, it) } ?: onCreate(name)
                     showCreate = false
@@ -418,14 +514,21 @@ internal fun ProjectsScreen(
                     androidTemplate = null
                 },
                 enabled = name.isNotBlank(),
+                shape = RoundedCornerShape(10.dp),
             ) { Text(stringResource(R.string.ws_create)) }
         },
-        dismissButton = { TextButton(onClick = { showCreate = false }) { Text(stringResource(R.string.action_cancel)) } },
+        dismissButton = {
+            TextButton(
+                onClick = { showCreate = false },
+                shape = RoundedCornerShape(10.dp),
+            ) { Text(stringResource(R.string.action_cancel)) }
+        },
     )
     if (showGitDialog) AlertDialog(
         onDismissRequest = { if (!state.gitCloneRunning) showGitDialog = false },
-        icon = { Icon(Icons.Default.Code, null, tint = PocketOrange) },
-        title = { Text(stringResource(R.string.ws_clone_git_title)) },
+        shape = RoundedCornerShape(20.dp),
+        icon = { Icon(painterResource(R.drawable.ph_code), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp)) },
+        title = { Text(stringResource(R.string.ws_clone_git_title), fontWeight = FontWeight.Bold) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(stringResource(R.string.ws_clone_git_desc), color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 12.5.sp)
@@ -435,6 +538,17 @@ internal fun ProjectsScreen(
                     label = { Text(stringResource(R.string.ws_https_git_url)) },
                     placeholder = { Text("https://github.com/owner/repository.git") },
                     singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f),
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                    ),
                 )
                 state.gitCloneMessage?.let { Text(it, color = MaterialTheme.colorScheme.primary, fontSize = 12.sp) }
             }
@@ -443,9 +557,16 @@ internal fun ProjectsScreen(
             Button(
                 enabled = gitUrl.isNotBlank() && !state.gitCloneRunning,
                 onClick = { onCloneGit(gitUrl); showGitDialog = false; gitUrl = "" },
+                shape = RoundedCornerShape(10.dp),
             ) { Text(if (state.gitCloneRunning) stringResource(R.string.projects_cloning) else stringResource(R.string.ws_clone_project)) }
         },
-        dismissButton = { TextButton(onClick = { showGitDialog = false }, enabled = !state.gitCloneRunning) { Text(stringResource(R.string.action_cancel)) } },
+        dismissButton = {
+            TextButton(
+                onClick = { showGitDialog = false },
+                enabled = !state.gitCloneRunning,
+                shape = RoundedCornerShape(10.dp),
+            ) { Text(stringResource(R.string.action_cancel)) }
+        },
     )
     if (showGitHubDialog) {
         val clipboard = LocalClipboardManager.current
@@ -454,8 +575,9 @@ internal fun ProjectsScreen(
         }
         AlertDialog(
             onDismissRequest = { if (!state.gitCloneRunning) showGitHubDialog = false },
-            icon = { Icon(Icons.Default.Code, null, tint = PocketOrange) },
-            title = { Text(state.githubLogin?.let { stringResource(R.string.projects_github_account, it) } ?: stringResource(R.string.projects_connect_github)) },
+            shape = RoundedCornerShape(20.dp),
+            icon = { Icon(painterResource(R.drawable.ph_code), null, tint = MaterialTheme.colorScheme.primary, modifier = Modifier.size(24.dp)) },
+            title = { Text(state.githubLogin?.let { stringResource(R.string.projects_github_account, it) } ?: stringResource(R.string.projects_connect_github), fontWeight = FontWeight.Bold) },
             text = {
                 when (state.githubAuthStatus) {
                     GitHubAuthStatus.DISCONNECTED, GitHubAuthStatus.ERROR -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -464,7 +586,7 @@ internal fun ProjectsScreen(
                             color = if (state.githubAuthStatus == GitHubAuthStatus.ERROR) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 13.sp,
                         )
-                        Button(onClick = onStartGitHubLogin, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.ws_github_signin)) }
+                        Button(onClick = onStartGitHubLogin, modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.ws_github_signin)) }
                     }
                     GitHubAuthStatus.STARTING -> Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                         CircularProgressIndicator(Modifier.size(28.dp), strokeWidth = 2.5.dp)
@@ -492,8 +614,9 @@ internal fun ProjectsScreen(
                         OutlinedButton(
                             onClick = onGenerateNewGitHubCode,
                             modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
                         ) {
-                            Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
+                            Icon(painterResource(R.drawable.ph_sparkle), contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.width(8.dp))
                             Text(stringResource(R.string.ws_github_new_code))
                         }
@@ -502,16 +625,24 @@ internal fun ProjectsScreen(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(state.githubMessage ?: stringResource(R.string.ws_github_select_repo), modifier = Modifier.weight(1f), fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             IconButton(onClick = onRefreshGitHub, enabled = !state.githubRepositoriesLoading) {
-                                Icon(Icons.Default.Refresh, stringResource(R.string.ws_github_refresh_repos))
+                                Icon(painterResource(R.drawable.ph_sparkle), stringResource(R.string.ws_github_refresh_repos), modifier = Modifier.size(18.dp))
                             }
                         }
                         OutlinedTextField(
                             value = repositorySearch,
                             onValueChange = { repositorySearch = it },
                             placeholder = { Text(stringResource(R.string.ws_github_search_repos)) },
-                            leadingIcon = { Icon(Icons.Default.Search, null) },
+                            leadingIcon = { Icon(painterResource(R.drawable.ph_sparkle), null, modifier = Modifier.size(16.dp)) },
                             singleLine = true,
+                            shape = RoundedCornerShape(12.dp),
                             modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f),
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                            ),
                         )
                         if (state.githubRepositoriesLoading) LinearProgressIndicator(Modifier.fillMaxWidth())
                         LazyColumn(Modifier.fillMaxWidth().heightIn(max = 350.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -525,7 +656,7 @@ internal fun ProjectsScreen(
                                     color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f),
                                 ) {
                                     Row(Modifier.padding(11.dp), verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(if (repository.private) Icons.Default.Key else Icons.Default.Code, null, modifier = Modifier.size(17.dp), tint = PocketOrange)
+                                        Icon(painterResource(if (repository.private) R.drawable.ph_shield_check else R.drawable.ph_code), null, modifier = Modifier.size(17.dp), tint = MaterialTheme.colorScheme.primary)
                                         Spacer(Modifier.width(9.dp))
                                         Column(Modifier.weight(1f)) {
                                             Text(repository.fullName, fontSize = 12.sp, fontWeight = FontWeight.SemiBold, maxLines = 1, overflow = TextOverflow.Ellipsis)
@@ -540,14 +671,14 @@ internal fun ProjectsScreen(
             },
             confirmButton = {
                 if (state.githubAuthStatus == GitHubAuthStatus.CONNECTED) {
-                    TextButton(onClick = { showGitHubDialog = false }) { Text(stringResource(R.string.action_close)) }
+                    TextButton(onClick = { showGitHubDialog = false }, shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.action_close)) }
                 }
             },
             dismissButton = {
                 if (state.githubAuthStatus == GitHubAuthStatus.CONNECTED) {
-                    TextButton(onClick = { onDisconnectGitHub(); showGitHubDialog = false }) { Text(stringResource(R.string.ws_disconnect)) }
+                    TextButton(onClick = { onDisconnectGitHub(); showGitHubDialog = false }, shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.ws_disconnect)) }
                 } else if (state.githubAuthStatus != GitHubAuthStatus.STARTING) {
-                    TextButton(onClick = { showGitHubDialog = false }) { Text(stringResource(R.string.action_cancel)) }
+                    TextButton(onClick = { showGitHubDialog = false }, shape = RoundedCornerShape(10.dp)) { Text(stringResource(R.string.action_cancel)) }
                 }
             },
         )

@@ -45,7 +45,14 @@ The objective of Milestone 4 is to deliver the core daily workflow of PocketForg
 
 ---
 
-## 3. Verification & Phone Checkpoint 1
-- Milestone 4 marks **PHONE CHECKPOINT 1**:
-  - Building and verifying via GitHub Actions CI.
-  - Instructing the user on how to download and test the APK on physical Android device.
+## 3. Phone Checkpoint 1 Feedback & Fixes (Gravitas Resolution)
+During physical device testing at Phone Checkpoint 1, the user reported three critical issues:
+1. **Tool Approval card never appeared:**
+   - *Cause:* `RuntimeInstaller.kt` hardcoded `/opt/pocket/permission-hook.sh` to auto-allow unconditionally, and set `permissions.allow = ["Bash", "Edit", "Write", "NotebookEdit", ...]`, bypassing permission requests. Additionally, `ClaudeRuntimeBridge.kt` auto-approved requests without emitting `ToolRequested`.
+   - *Fix:* Replaced `permission-hook.sh` with a bidirectional bridge script that posts `.request` files into `/pocket-bridge` and awaits `.response`. Reduced pre-approved tools to read-only (`Read`, `Glob`, `Grep`) and set `defaultMode = "ask"`. Refactored `ClaudeRuntimeBridge.kt` to emit `RuntimeEvent.ToolRequested`, presenting the Amber Approval Card to the user.
+2. **Bengali Translation Gap (~70% English):**
+   - *Cause:* Only 119 strings were translated in `values-bn/strings.xml`, while the app has 1,281 strings across 10 resource files. Untranslated strings fell back to English.
+   - *Fix:* Translated all 1,174 missing strings across 9 new `values-bn/` XML files (`strings_workspace.xml`, `strings_settings.xml`, `strings_files.xml`, `strings_messages.xml`, `strings_runtime.xml`, `strings_android.xml`, `strings_models.xml`, `strings_backup.xml`, `strings_whats_new.xml`) and synced `values-bn/strings.xml` to 100% coverage (1,281 / 1,281 strings).
+3. **Create Project & Dialog Color / Contrast Issues:**
+   - *Cause:* `AlertDialog` `OutlinedTextField` had no explicit container colors, shape, or borders, making the input box blend invisibly into dark surfaces. `AssistChip` lacked active selection states.
+   - *Fix:* Redesigned `showCreate` dialog with `RoundedCornerShape(20.dp)`, high-contrast `OutlinedTextField` styling (`focusedBorderColor`, `unfocusedBorderColor`, subtle container fill, cursor color), `FilterChip` selection with `ph_check_circle`, and monospace folder preview card. Updated `showGitDialog`, `showGitHubDialog`, `ProjectCard` Rename/Delete dialogs, and `FilesTab` dialog with matching styling.

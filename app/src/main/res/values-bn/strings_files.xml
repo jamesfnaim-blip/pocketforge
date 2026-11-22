@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="fm_new">নতুন</string>
+    <string name="fm_new_file">নতুন ফাইল</string>
+    <string name="fm_new_folder">নতুন ফোল্ডার</string>
+    <string name="fm_upload_here">এখানে আপলোড করুন</string>
+    <string name="fm_rename">নাম পরিবর্তন</string>
+    <string name="fm_delete">মুছে ফেলুন</string>
+    <string name="fm_share">শেয়ার করুন</string>
+    <string name="fm_save_copy">কপি সংরক্ষণ করুন</string>
+    <string name="fm_more_actions">%1$s এর জন্য অন্যান্য কাজ</string>
+    <string name="fm_name">নাম</string>
+    <string name="fm_create">তৈরি করুন</string>
+    <string name="fm_delete_title">%1$s মুছে ফেলতে চান?</string>
+    <string name="fm_delete_file_desc">এই ফাইলটি স্থায়ীভাবে মুছে যাবে।</string>
+    <string name="fm_delete_folder_desc">এই ফোল্ডার এবং এর ভেতরের সবকিছু স্থায়ীভাবে মুছে যাবে।</string>
+    <string name="fm_created">%1$s তৈরি করা হয়েছে</string>
+    <string name="fm_renamed">নাম পরিবর্তন করে %1$s রাখা হয়েছে</string>
+    <string name="fm_deleted">%1$s মুছে ফেলা হয়েছে</string>
+    <string name="fm_saved_copy">%1$s এর একটি কপি সংরক্ষণ করা হয়েছে</string>
+    <string name="fm_invalid_name">একটি সঠিক নাম দিন (কোনো স্ল্যাশ, . বা .. ছাড়া)</string>
+    <string name="fm_exists">%1$s ইতিপূর্বেই বিদ্যমান</string>
+    <string name="fm_failed">সম্পন্ন করা যায়নি: %1$s</string>
+    <string name="fm_busy">চলমান টাস্ক, টার্মিনাল কমান্ড বা বিল্ড আগে থামান</string>
+    <string name="fm_share_title">%1$s শেয়ার করুন</string>
+    <string name="fm_too_large">%1$s আপলোডের জন্য অনুমোদিত সীমা %2$s এর চেয়ে বড়</string>
+    <string name="fm_protected">এই আইটেমটি সুরক্ষিত এবং পরিবর্তন করা যাবে না</string>
+    <plurals name="fm_uploaded">
+        <item quantity="one">%1$dটি ফাইল আপলোড করা হয়েছে</item>
+        <item quantity="other">%1$dটি ফাইল আপলোড করা হয়েছে</item>
+    </plurals>
+</resources>

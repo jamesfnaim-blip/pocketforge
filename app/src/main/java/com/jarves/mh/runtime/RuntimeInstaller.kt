@@ -1640,8 +1640,35 @@ class RuntimeInstaller(private val context: Context) {
         hook.parentFile?.mkdirs()
         hook.writeText(
             """#!/bin/sh
-cat > /dev/null
-printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decision":{"behavior":"allow"}}}'
+BRIDGE_DIR="/pocket-bridge"
+if [ ! -d "${'$'}BRIDGE_DIR" ]; then
+    cat > /dev/null
+    printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decision":{"behavior":"allow"}}}'
+    exit 0
+fi
+
+REQ_ID="req_${'$'}(date +%s%N 2>/dev/null || date +%s)_${'$'}$"
+cat > "${'$'}BRIDGE_DIR/${'$'}REQ_ID.request"
+
+# Wait up to 180 seconds for approval response from Android UI
+COUNT=0
+TIMEOUT=1800
+while [ ! -f "${'$'}BRIDGE_DIR/${'$'}REQ_ID.response" ] && [ ${'$'}COUNT -lt ${'$'}TIMEOUT ]; do
+    sleep 0.1
+    COUNT=${'$'}((COUNT + 1))
+done
+
+DECISION="deny"
+if [ -f "${'$'}BRIDGE_DIR/${'$'}REQ_ID.response" ]; then
+    RESP=${'$'}(cat "${'$'}BRIDGE_DIR/${'$'}REQ_ID.response" 2>/dev/null | tr -d ' \n\r')
+    if [ "${'$'}RESP" = "allow" ]; then
+        DECISION="allow"
+    fi
+    rm -f "${'$'}BRIDGE_DIR/${'$'}REQ_ID.response"
+fi
+rm -f "${'$'}BRIDGE_DIR/${'$'}REQ_ID.request"
+
+printf '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decision":{"behavior":"%s"}}}\n' "${'$'}DECISION"
 """,
         )
         Os.chmod(hook.absolutePath, 0b111101101)
@@ -1652,7 +1679,7 @@ printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decis
                 "permissions",
                 JSONObject()
                     .put("allow", claudeWorkspaceToolRules())
-                    .put("defaultMode", "acceptEdits"),
+                    .put("defaultMode", "ask"),
             )
             .put(
                 "hooks",
@@ -1700,10 +1727,6 @@ printf '%s\n' '{"hookSpecificOutput":{"hookEventName":"PermissionRequest","decis
     }
 
     private fun claudeWorkspaceToolRules() = org.json.JSONArray().apply {
-        put("Bash")
-        put("Edit")
-        put("Write")
-        put("NotebookEdit")
         put("Read")
         put("Glob")
         put("Grep")

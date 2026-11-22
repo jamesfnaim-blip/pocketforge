@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="whats_new_title">নতুন কী আছে</string>
+    <string name="whats_new_version">ভার্সন %1$s</string>
+    <string name="whats_new_open_backup">ব্যাকআপ এবং রিস্টোর খুলুন</string>
+    <string name="whats_new_got_it">বুঝেছি</string>
+    <string-array name="whats_new_items">
+        <item>ব্যাকআপ এবং রিস্টোর: আপনার সমস্ত প্রজেক্ট, ফাইল, চ্যাট এবং সেটিংস একটি ফাইলে সংরক্ষণ করুন। এটি সেটিংসে পাবেন।</item>
+        <item>আপনার এপিআই কী এবং লগইনসমূহ (GitHub, git, SSH, কোডিং এজেন্ট) নিরাপদ রাখতে একটি পাসওয়ার্ড যুক্ত করুন।</item>
+        <item>রিস্টোর করার সময় ব্যাকআপের প্রজেক্টগুলো আপনার ফোনের প্রজেক্টগুলোর পাশে যুক্ত হয়, ফলে কোনো তথ্য হারায় না।</item>
+        <item>অ্যাপটি পুনরায় ইনস্টল করার পর সেটআপ স্ক্রিন থেকেই সবকিছু রিস্টোর করতে পারবেন।</item>
+        <item>স্ক্রিন বন্ধ থাকলেও ব্যাকআপ ব্যাকগ্রাউন্ডে চলতে থাকে এবং লাইভ প্রগ্রেস প্রদর্শন করে।</item>
+    </string-array>
+</resources>

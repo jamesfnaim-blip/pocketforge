@@ -152,19 +152,59 @@ internal fun ProjectCard(
     if (showRename) {
         AlertDialog(
             onDismissRequest = { showRename = false },
-            title = { Text(stringResource(R.string.ws_rename_project)) },
-            text = { OutlinedTextField(renameText, { renameText = it }, label = { Text(stringResource(R.string.ws_project_name)) }, singleLine = true) },
-            confirmButton = { TextButton(onClick = { onRename(renameText); showRename = false }, enabled = renameText.isNotBlank()) { Text(stringResource(R.string.action_save)) } },
-            dismissButton = { TextButton(onClick = { showRename = false }) { Text(stringResource(R.string.action_cancel)) } },
+            shape = RoundedCornerShape(20.dp),
+            title = { Text(stringResource(R.string.ws_rename_project), fontWeight = FontWeight.Bold) },
+            text = {
+                OutlinedTextField(
+                    value = renameText,
+                    onValueChange = { renameText = it },
+                    label = { Text(stringResource(R.string.ws_project_name)) },
+                    singleLine = true,
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = MaterialTheme.colorScheme.primary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
+                        focusedLabelColor = MaterialTheme.colorScheme.primary,
+                        unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f),
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.15f),
+                        cursorColor = MaterialTheme.colorScheme.primary,
+                    ),
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = { onRename(renameText); showRename = false },
+                    enabled = renameText.isNotBlank(),
+                    shape = RoundedCornerShape(10.dp),
+                ) { Text(stringResource(R.string.action_save)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showRename = false }, shape = RoundedCornerShape(10.dp)) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
         )
     }
     if (showDelete) {
         AlertDialog(
             onDismissRequest = { showDelete = false },
-            title = { Text(stringResource(R.string.ws_delete_project_title)) },
-            text = { Text(stringResource(R.string.ws_delete_project_desc)) },
-            confirmButton = { TextButton(onClick = { onDelete(); showDelete = false }) { Text(stringResource(R.string.action_delete), color = MaterialTheme.colorScheme.error) } },
-            dismissButton = { TextButton(onClick = { showDelete = false }) { Text(stringResource(R.string.action_cancel)) } },
+            shape = RoundedCornerShape(20.dp),
+            title = { Text(stringResource(R.string.ws_delete_project_title), fontWeight = FontWeight.Bold) },
+            text = { Text(stringResource(R.string.ws_delete_project_desc), color = MaterialTheme.colorScheme.onSurfaceVariant) },
+            confirmButton = {
+                Button(
+                    onClick = { onDelete(); showDelete = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
+                    shape = RoundedCornerShape(10.dp),
+                ) { Text(stringResource(R.string.action_delete), color = MaterialTheme.colorScheme.onError) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDelete = false }, shape = RoundedCornerShape(10.dp)) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            },
         )
     }
 }
