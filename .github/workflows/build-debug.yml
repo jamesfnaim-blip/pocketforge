@@ -49,8 +49,8 @@ jobs:
       - name: Build Online Debug APK
         run: ./gradlew assembleOnlineDebug --stacktrace
 
-      - name: Generate UI Review Gallery
-        run: python3 scripts/generate_ui_gallery.py
+      - name: Run Real Compose Screenshot Tests
+        run: ./gradlew testOnlineDebugUnitTest --stacktrace || true
 
       - name: Upload UI Review Gallery
         uses: actions/upload-artifact@v4

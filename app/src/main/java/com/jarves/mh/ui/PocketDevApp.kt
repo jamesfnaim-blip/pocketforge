@@ -74,7 +74,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Composable
-fun PocketDevApp(viewModel: MainViewModel = viewModel()) {
+fun PocketDevApp(
+    viewModel: MainViewModel = viewModel(),
+    onReturnToV2: (() -> Unit)? = null,
+) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val projectsListState = rememberSaveable(saver = LazyListState.Saver) { LazyListState() }
@@ -85,7 +88,41 @@ fun PocketDevApp(viewModel: MainViewModel = viewModel()) {
         }
     }
     BackupRestartEffect()
-    when {
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        if (onReturnToV2 != null) {
+            Surface(
+                onClick = onReturnToV2,
+                color = Color(0xFF6366F1),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding(),
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "← Return to New PocketForge AI UI",
+                        color = Color.White,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                    Text(
+                        text = "নতুন UI-তে ফিরুন",
+                        color = Color.White.copy(alpha = 0.85f),
+                        style = MaterialTheme.typography.labelMedium,
+                    )
+                }
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            when {
         state.startupStage == StartupStage.CHECKING -> StartupLoadingScreen(
             state = state,
             themeMode = state.themeMode,
@@ -246,6 +283,8 @@ fun PocketDevApp(viewModel: MainViewModel = viewModel()) {
             onInstallAndroidTools = { viewModel.installDevStack(DevStack.ANDROID) },
         )
         else -> RootScreenHost(state, viewModel, projectsListState)
+    }
+        }
     }
 }
 

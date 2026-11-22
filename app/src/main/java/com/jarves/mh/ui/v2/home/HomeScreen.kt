@@ -44,6 +44,7 @@ fun HomeScreen(
     onNewProject: () -> Unit,
     onCloneRepo: () -> Unit,
     onTemplates: () -> Unit,
+    onOpenClassicUi: (() -> Unit)? = null,
     modifier: Modifier = Modifier,
 ) {
     val colors = ForgeTheme.colors
@@ -78,6 +79,49 @@ fun HomeScreen(
             osDescription = "Ubuntu 20.04 LTS (PRoot ARM64)",
             activeServerUrl = serverUrl,
         )
+
+        // PROMINENT CLASSIC UI TRANSITION BANNER
+        if (onOpenClassicUi != null) {
+            ForgeCard(
+                style = ForgeCardStyle.ELEVATED,
+                onClick = onOpenClassicUi,
+                contentPadding = 12.dp,
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    ) {
+                        PhosphorIcon(
+                            icon = PhosphorIconType.ARROW_CLOCKWISE,
+                            size = 20.dp,
+                            tint = colors.accent,
+                        )
+                        Column {
+                            Text(
+                                text = "Switch to Classic Mobile Harness UI",
+                                style = typography.titleSmall,
+                                color = colors.textPrimary,
+                            )
+                            Text(
+                                text = "Access Files, Full Terminal, DevStack & Android Builder",
+                                style = typography.bodySmall,
+                                color = colors.textSecondary,
+                            )
+                        }
+                    }
+                    PhosphorIcon(
+                        icon = PhosphorIconType.CARET_RIGHT,
+                        size = 18.dp,
+                        tint = colors.textMuted,
+                    )
+                }
+            }
+        }
 
         // HERO CTA: START AUTONOMOUS TASK
         Box(

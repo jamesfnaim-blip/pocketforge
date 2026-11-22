@@ -15,6 +15,8 @@ Running an autonomous Linux subsystem, developer toolchains, and AI coding agent
 | **R-05** | Internal Storage Exhaustion on Budget Phones | **MEDIUM** | **MEDIUM** | 🟡 Moderate |
 | **R-06** | Incompatible x86 Emulators & 32-bit ARM Devices | **MEDIUM** | **MEDIUM** | 🟡 Moderate |
 | **R-07** | Linux Subsystem Rootfs Corruption on Sudden Power Loss | **LOW** | **HIGH** | 🟡 Moderate |
+| **R-08** | Public Debug Keystore Exposure vs. Secure Production Release Signing | **HIGH** | **HIGH** | 🔴 Severe |
+| **R-09** | Cryptographic Signature Collision & Single-Install Constraint (`com.jarves.mh`) | **HIGH** | **CRITICAL** | 🔴 Severe |
 
 ---
 
@@ -86,3 +88,41 @@ Running an autonomous Linux subsystem, developer toolchains, and AI coding agent
 * **Engineered Mitigations:**
   - Retain `RootfsRepair.kt`'s atomic swap pattern: all modifications take place in `.staging/`; the active rootfs is only replaced upon 100% verified extraction.
   - Automatic snapshot backups before system updates.
+
+---
+
+### R-08: Public Debug Keystore Exposure vs. Secure Production Release Signing
+* **The Hazard:** The repository commits a public `app/debug.keystore` file to Git with standard credentials (`storepass: android`, `keypass: android`). Anyone with access to the repository can build and sign an APK with this exact debug certificate.
+* **Impact:** 
+  - Debug builds provide **zero authenticity or tamper protection**. If a user installs a debug APK from an untrusted third party, Android will treat it as legitimate if signed by the same public debug key.
+  - Using a public keystore for official public releases would allow bad actors to publish malicious update APKs that overwrite legitimate installations.
+* **Engineered Mitigations:**
+  1. **Strict Build Separation:**
+     - `app/debug.keystore` is **exclusively restricted to `buildTypes.debug`**. It exists solely to maintain deterministic signing across development CI builds, preventing `INSTALL_FAILED_UPDATE_INCOMPATIBLE` during testing iterations.
+     - `buildTypes.release` is strictly prohibited from falling back to `debug.keystore`.
+  2. **Air-Gapped Production Keystore:**
+     - The production signing key must **never be committed to Git**.
+     - Release builds in GitHub Actions will pull the production keystore and credentials strictly from **GitHub Actions Encrypted Secrets**:
+       - `MH_UPLOAD_STORE_BASE64`: Base64-encoded private release keystore file.
+       - `MH_UPLOAD_STORE_PASSWORD`: Keystore master password.
+       - `MH_UPLOAD_KEY_ALIAS`: Production key alias.
+       - `MH_UPLOAD_KEY_PASSWORD`: Private key password.
+  3. **Zero Chat Exposure:**
+     - The project lead must never paste private keystores, base64 blobs, or passwords into any chat or public forum. All secrets configuration is performed via GitHub's official web console under `Repository Settings -> Secrets and variables -> Actions`.
+
+---
+
+### R-09: Cryptographic Signature Collision & Single-Install Constraint (`com.jarves.mh`)
+* **The Hazard:** The user's physical phone currently has an existing build of Mobile Harness installed, signed with either upstream's release key or a previously generated ephemeral debug certificate. Because Android's Package Manager enforces strict cryptographic certificate matching per `applicationId`, attempting to install a new APK signed with `app/debug.keystore` over the old installation will be immediately rejected with:
+  `INSTALL_FAILED_UPDATE_INCOMPATIBLE` (signatures do not match previously installed version).
+* **Impact:** 
+  - The new debug build **cannot be installed as an update over the existing installed Mobile Harness build**.
+  - Because both apps currently share `applicationId = "com.jarves.mh"`, the original Mobile Harness and PocketForge AI **cannot coexist simultaneously** on the same device.
+* **Engineered Mitigations & Mandatory User Procedure:**
+  1. **Mandatory One-Time Backup & Uninstall:**
+     - Before installing the first PocketForge unified debug APK, the user must **export/backup** all critical project files and API keys from their existing app.
+     - The user must perform a **one-time complete uninstall** of the previously installed Mobile Harness app.
+  2. **Subsequent Frictionless Updates:**
+     - Once the initial PocketForge debug APK is installed, every subsequent build produced by CI (signed with the deterministic `app/debug.keystore`) can be updated seamlessly without uninstalling or wiping user data.
+  3. **Permanent Solution (Milestone ENG-4):**
+     - Under Milestone ENG-4, the application ID will be migrated to `com.pocketforge.ai`. From that milestone onward, PocketForge AI and the original Mobile Harness can be installed and run side-by-side on the same phone without any interference.

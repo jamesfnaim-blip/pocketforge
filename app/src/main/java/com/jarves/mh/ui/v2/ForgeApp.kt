@@ -35,7 +35,10 @@ fun ForgeApp(
 
     if (showLegacyUi) {
         // Fallback to legacy UI during migration so user never loses access to any sub-feature
-        PocketDevApp(viewModel)
+        PocketDevApp(
+            viewModel = viewModel,
+            onReturnToV2 = { showLegacyUi = false },
+        )
     } else {
         val appState = ForgeAppState(
             currentRoute = currentRoute,

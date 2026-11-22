@@ -48,6 +48,7 @@ fun ForgeNavHost(
                 onNewProject = { onNavigate(ForgeNavRoute.Chat) },
                 onCloneRepo = { onNavigate(ForgeNavRoute.Git) },
                 onTemplates = { onNavigate(ForgeNavRoute.Templates) },
+                onOpenClassicUi = onToggleLegacyUi,
                 modifier = modifier,
             )
         }
