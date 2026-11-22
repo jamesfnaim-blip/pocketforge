@@ -254,7 +254,7 @@ fun SetupWizardScreen(
                                 isInstalling -> "Installing ${(startupProgress * 100).toInt()}%"
                                 else -> "Not Installed"
                             },
-                            tone = if (isSubsystemInstalled) ForgeChipTone.SUCCESS else ForgeChipTone.DEFAULT,
+                            tone = if (isSubsystemInstalled) ForgeChipTone.SUCCESS else ForgeChipTone.NEUTRAL,
                         )
                     }
 

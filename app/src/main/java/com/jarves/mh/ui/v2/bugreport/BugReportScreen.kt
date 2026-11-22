@@ -144,7 +144,7 @@ fun BugReportScreen(
                     Text(text = "Active Subsystem Processes", style = typography.titleSmall, color = colors.textPrimary)
                     ForgeChip(
                         text = "${diagnostics.activeProcesses.size} running",
-                        tone = if (diagnostics.activeProcesses.isNotEmpty()) ForgeChipTone.ACCENT else ForgeChipTone.DEFAULT,
+                        tone = if (diagnostics.activeProcesses.isNotEmpty()) ForgeChipTone.ACCENT else ForgeChipTone.NEUTRAL,
                     )
                 }
                 if (diagnostics.activeProcesses.isEmpty()) {
@@ -164,7 +164,7 @@ fun BugReportScreen(
                 Text(
                     text = diagnostics.recentExit ?: "None recorded. Subsystem operating stably.",
                     style = typography.codeSmall,
-                    color = if (diagnostics.recentExit != null) colors.danger else colors.textMuted,
+                    color = if (diagnostics.recentExit != null) colors.error else colors.textMuted,
                 )
             }
         }
